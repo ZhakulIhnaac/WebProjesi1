@@ -1,0 +1,90 @@
+<div class="row clearfix" [@routerTransition]>
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card">
+            <div class="header">
+                <h2>
+                    {{ "OfferCalculator" | localize}}
+                </h2>
+            </div>
+            <div class="body">
+                <p style="font-size: 16px;">
+                    Service contracts are meant for studies, technical assistance and are also used for audits or communication services. A study contract is a service contract concluded between a contractor and the contracting authority, which includes studies for the identification and preparation of projects, feasibility studies, economic and market studies, technical studies and audits. A technical assistance contract is a service contract where the contractor is called on to play an advisory role, to manage or supervise a project, or to provide the expertise specified in the contract.
+                </p>
+                <p style="font-size: 16px;">
+                    Evaluation of a Service Contracts is under the responsibility of the Contracting Authority assigned to that Contract. This evaluation process consists of two stages, where evaluation of the Technical Offer is the first stage, and evalualion of the Financial Offer is the second stage.
+                </p>
+                <p style="font-size: 16px;">
+                    In the first stage, the evaluation committee then examines the technical offers, while the financial offers remaining sealed. When evaluating technical offers, each member of the committee awards each offer a score out of a maximum 100 points in accordance with the technical evaluation grid (setting out the technical criteria, sub-criteria and weightings) laid down in the tender dossier. Lastly, the average of these awarded scores becomes the score of the corresponding tenderers. Only offers that achieve a score of 75 or more are declared 'technically accepted' and allowed to continue to the second stage, Financial Offer evaluation. In others words, tenders with technical score less than 75 out of 100 points are rejected prior to the evaluation of the financial offers. Finally, the committee assigns 100 points to the tender with highest technical score and assigns points to the other tenders based on ratio. The final points of the technical offers are called Technical Offer Scores of the tenderers.
+                </p>
+                <p style="font-size: 16px;">
+                    Second stage of the evaluation starts with checking whether the financial offer satisfies all formal requirements. After ensuring that the financial offers not satisfying the formal requirements are rejected, the cheapest offer among the remaining is assigned with 100 points. Rest of the remaining offers are assigned with points obtained by taking the ratio similar to the first stage. The final points of the financial offers are called Financial Offer Scores  of the tenderers. Table below shows the cases where AYC Consulting and at least one competitor have passed the first stage and assigned with some Technical Offer Scores each. Inside the table, you may find where AYC Consulting stands compared to the best competitor in terms of technical score. Left column shows the score of AYC Consultancy, and the top row shows the score of best competitor.
+                </p>
+                <p style="font-size: 16px;">
+                    Calculator below helps you to find the exact amount you should offer to reach the breakeven point for a given scenario where AYC Consulting and the best competitor have assigned with Technical Offer Scores.
+                </p>
+                <div class="col col-xs-12 col-sm-4 col-md-4 col-lg-4 col-xl-4">
+                    <mat-form-field>
+                        <mat-select [placeholder]="l('AycScore')"
+                                    [(ngModel)]="aycScore"
+                                    name="aycScore"
+                                    (ngModelChange)="refreshScoreDifference()">
+                            <mat-option *ngFor="let score of scoreList" [value]="score">{{ score }}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="col col-xs-12 col-sm-4 col-md-4 col-lg-4 col-xl-4">
+                    <mat-form-field>
+                        <mat-select [placeholder]="l('CompetitorScore')"
+                                    [(ngModel)]="competitorScore"
+                                    name="competitorScore"
+                                    (ngModelChange)="refreshScoreDifference()">
+                            <mat-option *ngFor="let score of scoreList" [value]="score">{{ score }}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="col col-xs-12 col-sm-4 col-md-4 col-lg-4 col-xl-4">
+                    <mat-form-field>
+                        <input matInput
+                               [placeholder]="l('TechnicalScoreDifference')"
+                               [(ngModel)]="technicalScoreDifference"
+                               name="technicalScoreDifference"
+                               readonly>
+                    </mat-form-field>
+                </div>
+                <div class="col col-xs-12 col-sm-4 col-md-4 col-lg-4 col-xl-4">
+                    <mat-form-field>
+                        <input matInput
+                               [placeholder]="l('AycUpperTreshold')"
+                               [(ngModel)]="aycUpperTreshold"
+                               type="number"
+                               name="aycUpperTreshold">
+                    </mat-form-field>
+                </div>
+                <div class="col col-xs-12 col-sm-4 col-md-4 col-lg-4 col-xl-4">
+                    <mat-form-field>
+                        <input matInput
+                               [placeholder]="l('CompetitorOffer')"
+                               [(ngModel)]="competitorOffer"
+                               type="number"
+                               name="competitorOffer"
+                               (ngModelChange)="refreshBreakEven()">
+                    </mat-form-field>
+                </div>
+                <div class="col col-xs-12 col-sm-4 col-md-4 col-lg-4 col-xl-4">
+                    <mat-form-field>
+                        <input matInput
+                               [placeholder]="l('BreakEvenPoint')"
+                               [(ngModel)]="breakEvenPoint"
+                               name="breakEvenPoint"
+                               readonly>
+                    </mat-form-field>
+                    <p *ngIf="aycUpperTreshold != undefined && aycUpperTreshold < breakEvenPoint" style="font-size:12px; color: red">{{ "OfferTresholdError" | localize}}</p>
+                </div>
+
+                <p style="font-size: 16px;">
+                    <a href="http://ec.europa.eu/europeaid/prag/document.do?nodeNumber=3.4.10" target="_blank"><i>Please click here for further information on evaluation of offers for Service Contracts.</i></a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>

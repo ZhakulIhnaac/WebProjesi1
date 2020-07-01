@@ -1,0 +1,151 @@
+<div class="row clearfix" [@routerTransition]>
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card main-content">
+            <div class="header">
+                <h2>{{ "Tenders" | localize }}</h2>
+                <ul class="header-dropdown m-r--5">
+                    <li>
+                        <button mat-icon-button [matMenuTriggerFor]="headerMenu" class="header-dropdown-mat-icon-button">
+                            <mat-icon>more_vert</mat-icon>
+                        </button>
+                        <mat-menu #headerMenu="matMenu">
+                            <button mat-menu-item (click)="refresh()">
+                                <mat-icon>refresh</mat-icon>
+                                <span>{{ "Refresh" | localize }}</span>
+                            </button>
+                        </mat-menu>
+                    </li>
+                </ul>
+            </div>
+            <div class="body table-responsive">
+                <!--query start-->
+                <div class="row clearfix">
+                    <form>
+                        <div class="row">
+                            <div class="col col-xs-12 col-sm-2 col-md-2 col-lg-2 col-xl-2">
+                                <mat-form-field>
+                                    <input matInput [placeholder]="l('TenderNumber')" [(ngModel)]="searchKeyTenderNumber" name="searchKeyTenderNumber">
+                                </mat-form-field>
+                            </div>
+                            <div class="col col-xs-12 col-sm-10 col-md-10 col-lg-10 col-xl-10">
+                                <mat-form-field>
+                                    <input matInput [placeholder]="l('TenderName')" [(ngModel)]="searchKeyTenderTitle" name="searchKeyTenderTitle">
+                                </mat-form-field>
+                            </div>
+                            <div class="col col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                                <mat-form-field>
+                                    <input matInput [placeholder]="l('TenderDescription')" [(ngModel)]="searchKeyDescription" name="searchKeyDescription">
+                                </mat-form-field>
+                            </div>
+                            <div class="col col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                                <mat-form-field>
+                                    <input matInput [placeholder]="l('Criterias')" [(ngModel)]="searchKeyCriterias" name="searchKeyCriterias">
+                                </mat-form-field>
+                            </div>
+                            <div class="col col-xs-12 col-sm-3 col-md-3 col-lg-3 col-xl-3">
+                                <mat-form-field>
+                                    <mat-label>{{ 'Type' | localize }}</mat-label>
+                                    <mat-select [(ngModel)]="searchKeyTypeList"
+                                                multiple
+                                                name="searchKeyTypeList">
+                                        <mat-option *ngFor="let tenderType of tenderTypeList" [value]="tenderType.id">{{ tenderType.typeName | localize }}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div class="col col-xs-12 col-sm-3 col-md-3 col-lg-3 col-xl-3">
+                                <mat-form-field>
+                                    <mat-label>{{ 'Status' | localize }}</mat-label>
+                                    <mat-select [(ngModel)]="searchKeyStatusList"
+                                                multiple
+                                                name="searchKeyStatusList">
+                                        <mat-option *ngFor="let status of statusList" [value]="status.id">{{ status.statusName | localize }}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-12 text-right p-r-25">
+                                <button mat-raised-button color="primary" (click)="searchTenders()">{{ 'Search' | localize }}</button>
+                                &nbsp;
+                                <button mat-raised-button color="primary" (click)="resetSearch()">{{ 'Reset' | localize }}</button>
+                                <hr style="height: 2px; background-color:lightgrey" />
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <!--query end-->
+                <table class="table table-hover table-striped">
+                    <thead>
+                        <tr>
+                            <th width="10%">{{ "TenderNumber" | localize }}</th>
+                            <th width="60%">{{ "TenderName" | localize }}</th>
+                            <th width="10%">{{ "Type" | localize }}</th>
+                            <th width="10%">{{ "Status" | localize }}</th>
+                            <th width="10%">{{ "Actions" | localize }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor=" let tender of tenderList">
+                            <td>{{ tender.tenderNumber }}</td>
+                            <td>{{ tender.title }}</td>
+                            <td>{{ tender.type.typeName | localize }}</td>
+                            <td>{{ tender.status.statusName | localize }}</td>
+                            <td>
+                                <button class="action-button" mat-icon-button [matMenuTriggerFor]="actionsMenu">
+                                    <mat-icon>menu</mat-icon>
+                                </button>
+                                <mat-menu #actionsMenu="matMenu">
+                                    <button mat-menu-item (click)="nextPhase(tender.id, tender.statusId)" *ngIf="tender.statusId != eStatus.Cancelled && tender.statusId != eStatus.Awarded">
+                                        <mat-icon>arrow_upward</mat-icon>
+                                        <span>{{ "NextPhase" | localize }}</span>
+                                    </button>
+                                    <button mat-menu-item (click)="createEditDialog(tender.id)">
+                                        <mat-icon>edit</mat-icon>
+                                        <span>{{ "Edit" | localize }}</span>
+                                    </button>
+                                    <button mat-menu-item (click)="detailDialog(tender.id)">
+                                        <mat-icon>web_asset</mat-icon>
+                                        <span>{{ "Details" | localize }}</span>
+                                    </button>
+                                    <button *ngIf="tender.openingDate != null" mat-menu-item (click)="showConsortiums(tender.id, tender.title)">
+                                        <mat-icon>group</mat-icon>
+                                        <span>{{ "Consortiums" | localize }}</span>
+                                    </button>
+                                    <button mat-menu-item (click)="delete(tender)">
+                                        <mat-icon>delete</mat-icon>
+                                        <span>{{ "Delete" | localize }}</span>
+                                    </button>
+                                </mat-menu>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="abp-pagination-controls-wrapper" *ngIf="totalItems > maxResult">
+                    <div class="col col-xs-2 col-sm-2 col-md-2 col-lg-2 col-xl-2">
+                        <mat-form-field>
+                            <mat-select [placeholder]="l('PageNumber')"
+                                        [(ngModel)]="page"
+                                        name="page"
+                                        (ngModelChange)="getTendersForTable()">
+                                <mat-option *ngFor="let page of pageList" [value]="page">{{ page }}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="col col-xs-2 col-sm-2 col-md-2 col-lg-2 col-xl-2">
+                        <mat-form-field>
+                            <mat-select [placeholder]="l('ResultCount')"
+                                        [(ngModel)]="maxResult"
+                                        name="resultCount"
+                                        (ngModelChange)="maxResultChange()">
+                                <mat-option [value]="10">10</mat-option>
+                                <mat-option [value]="20">20</mat-option>
+                                <mat-option [value]="30">30</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <button mat-mini-fab color="primary" class="pull-right" (click)="createEditDialog()">
+                    <mat-icon>add</mat-icon>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

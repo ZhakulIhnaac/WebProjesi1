@@ -1,0 +1,328 @@
+<div class="col col-sm-11 col-md-11 col-lg-11">
+    <h1 mat-dialog-title>{{ 'FirmDetails' | localize }}</h1>
+</div>
+<div class="col col-sm-1 col-md-1 col-lg-1">
+    <mat-icon style="cursor: pointer" (click)="close(false)">cancel</mat-icon>
+</div>
+<div class="col col-sm-12 col-md-12 col-lg-12">
+    <mat-tab-group mat-stretch-tabs>
+        <mat-tab [label]="'GeneralInformation' | localize">
+            <br />
+            <div class="col col-sm-12 col-md-12 col-lg-12">
+                <h5>{{ "FullTitle" | localize }}: </h5>
+                <p>{{ firm.name }} ({{ firm.country?.countryName }})</p>
+            </div>
+            <div class="col col-sm-12 col-md-6 col-lg-6">
+                <h5>{{ "PhoneNumber" | localize }}: </h5>
+                <p>{{ firm.phone != null ? firm.phone : "-"}}</p>
+            </div>
+            <div class="col col-sm-12 col-md-6 col-lg-6">
+                <h5>{{ "Fax" | localize }}: </h5>
+                <p>{{ firm.fax != null ? firm.fax : "-" }}</p>
+            </div>
+            <div class="col col-sm-12 col-md-6 col-lg-6">
+                <h5>{{ "EMail" | localize }}: </h5>
+                <p>{{ firm.eMail != null ? firm.eMail : "-" }}</p>
+            </div>
+            <div class="col col-sm-12 col-md-6 col-lg-6">
+                <h5>{{ "Website" | localize }}: </h5>
+                <p>{{ firm.website != null ? firm.website : "-" }}</p>
+            </div>
+            <div class="col col-sm-12 col-md-12 col-lg-12">
+                <hr style="height: 2px; background-color:lightgray" />
+                <h5>{{ "FirmContacts" | localize }} </h5>
+                <table class="table table-hover table-striped">
+                    <thead>
+                        <tr>
+                            <th width="40%">{{ "Name" | localize }}</th>
+                            <th width="15%">{{ "Position" | localize }}</th>
+                            <th width="15%">{{ "PhoneNumber" | localize }}</th>
+                            <th width="15%">{{ "Extension" | localize }}</th>
+                            <th width="15%">{{ "EMail" | localize }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let firmContact of firmContactList; let i = index">
+                            <td>{{ firmContact.contact.name }} {{ firmContact.contact.surname }}</td>
+                            <td>{{ firmContact.position }}</td>
+                            <td>{{ firmContact.phoneNumber != null ? firmContact.phoneNumber : "-" }}</td>
+                            <td>{{ firmContact.extension != null ? firmContact.extension : "-" }}</td>
+                            <td>{{ firmContact.eMail != null ? firmContact.eMail : "-" }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <h5 *ngIf="firmContactList.length == 0" style="font-size:12px; color: darkorange">{{ "TableNoElementWarning" | localize}}</h5>
+            </div>
+        </mat-tab>
+        <mat-tab [label]="'Tenders' | localize">
+            <div class="col col-sm-12 col-md-12 col-lg-12">
+                <br />
+                <mat-accordion>
+                    <mat-expansion-panel *ngFor=" let oldTendersOfFirm of oldTendersOfFirmList" style="margin:5px">
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>
+                                <div style="width:80%">
+                                    {{ oldTendersOfFirm.tenderNumber }} - {{ oldTendersOfFirm.title }}
+                                </div>
+                                &nbsp;
+                                <div style="width:20%">
+                                    <b>{{ 'Year' | localize }}:</b> {{ oldTendersOfFirm.year }}
+                                </div>
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <mat-expansion-panel-content>
+                            <div class="col col-sm-4 col-md-4 col-lg-4">
+                                <b>{{ 'MaximumBudget' | localize }}:</b> {{ oldTendersOfFirm.maximumBudget | number }} {{ oldTendersOfFirm.currency }}
+                            </div>
+                            <div class="col col-sm-4 col-md-4 col-lg-4">
+                                <b>{{ 'FirmRole' | localize }}:</b> {{ oldTendersOfFirm.role | localize }}
+                            </div>
+                            <div class="col col-sm-4 col-md-4 col-lg-4">
+                                <b>{{ 'Result' | localize }}:</b> {{ oldTendersOfFirm.result | localize }}
+                            </div>
+                            <div class="col col-sm-4 col-md-4 col-lg-4">
+                                <b>{{ 'TechnicalScore' | localize }}:</b> {{ oldTendersOfFirm.technicalScore | number : '1.2-2' }}
+                            </div>
+                            <div class="col col-sm-4 col-md-4 col-lg-4">
+                                <b>{{ 'FinancialScore' | localize }}:</b> {{ oldTendersOfFirm.financialScore | number : '1.2-2' }}
+                            </div>
+                            <div class="col col-sm-4 col-md-4 col-lg-4">
+                                <b>{{ 'TotalScore' | localize }}:</b> {{ oldTendersOfFirm.totalScore | number : '1.2-2' }}
+                            </div>
+                            <div class="col col-sm-4 col-md-4 col-lg-4">
+                                <b>{{ 'AwardedPrice' | localize }}:</b> {{ oldTendersOfFirm.awardedPrice | number }}
+                            </div>
+                            <div class="col col-sm-4 col-md-4 col-lg-4">
+                                <b>{{ 'Discount' | localize }}:</b> {{ oldTendersOfFirm.discount | number : '1.2-2' }}
+                            </div>
+                        </mat-expansion-panel-content>
+                    </mat-expansion-panel>
+                </mat-accordion>
+            </div>
+            <div class="col col-sm-12 col-md-12 col-lg-12">
+                <br />
+                <table mdbTable class="table table-bordered table-hover table-striped">
+                    <thead>
+                        <tr>
+                            <th width="25%">{{ "Year" | localize }}</th>
+                            <th width="15%">{{ "Awarded" | localize }}</th>
+                            <th width="15%">{{ "Lost" | localize }}</th>
+                            <th width="15%">{{ "Unannounced" | localize }}</th>
+                            <th width="15%">{{ "Cancelled" | localize }}</th>
+                            <th width="15%">{{ "Total" | localize }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let yearlyResult of yearlyResultList">
+                            <td>{{ yearlyResult.year }}</td>
+                            <td>{{ yearlyResult.awardedCount }}</td>
+                            <td>{{ yearlyResult.lostCount }}</td>
+                            <td>{{ yearlyResult.unannouncedCount }}</td>
+                            <td>{{ yearlyResult.cancelledCount }}</td>
+                            <td>{{ yearlyResult.totalCount }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </mat-tab>
+        <mat-tab [label]="'ShortlistStatistics' | localize">
+            <div class="col col-sm-12 col-md-12 col-lg-12">
+                <br />
+                <h5 style="color:gray"> {{ "ShortlistParticipationByRole" | localize }} </h5>
+                <hr style="height: 2px; background-color:lightgrey; margin-top:0px!important" />
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col col-sm-6 col-md-6 col-lg-6">
+                            <br />
+                            <table mdbTable class="table table-bordered table-hover table-striped">
+                                <thead>
+                                    <tr>
+                                        <th width="60%">{{ "Role" | localize }}</th>
+                                        <th width="20%">{{ "Number" | localize }}</th>
+                                        <th width="20%">{{ "Ratio" | localize }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>{{ "Leader" | localize }}</td>
+                                        <td>{{ shortlistResults['totalNumberAsLeader'] }}</td>
+                                        <td>{{ shortlistResults['ratioAsLeader'] }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>{{ "Member" | localize }}</td>
+                                        <td>{{ shortlistResults['totalNumberAsMember'] }}</td>
+                                        <td>{{ shortlistResults['ratioAsMember'] }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>{{ "Total" | localize }}</td>
+                                        <td>{{ shortlistResults['totalNumberAsLeader'] + shortlistResults['totalNumberAsMember'] }}</td>
+                                        <td>{{ shortlistResults['ratioAsLeader'] + shortlistResults['ratioAsMember'] }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col col-sm-6 col-md-6 col-lg-6">
+                            <div *ngIf="!shortlistRolesReady" style="height:200px; justify-content: center; text-align: center; display: flex; flex-direction: column;">
+                                <h3>{{ "NoDataAvailable" | localize }}</h3>
+                            </div>
+                            <div *ngIf="shortlistRolesReady" class="chart-wrapper">
+                                <canvas baseChart
+                                        [datasets]="shortlistRolesDataset"
+                                        [labels]="shortlistRolesLabel"
+                                        [options]="defaultChartOptions"
+                                        [colors]="defaultDoughnutChartColors"
+                                        [legend]="defaultChartLegend"
+                                        [chartType]="defaultDoughnutChartType"
+                                        [plugins]="defaultChartPlugins">
+                                </canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <br />
+                <h5 style="color:gray"> {{ "ShortlistResultsByRole" | localize }} </h5>
+                <hr style="height: 2px; background-color:lightgrey; margin-top:0px!important" />
+                <div class="container-fluid" style="border: 2px; border-color: lightgray">
+                    <div class="row">
+                        <div class="col col-sm-12 col-md-12 col-lg-12">
+                            <table mdbTable class="table table-bordered table-hover table-striped">
+                                <thead>
+                                    <tr>
+                                        <th width="55%">{{ "Result" | localize }}</th>
+                                        <th width="15%">{{ "Leader" | localize }}</th>
+                                        <th width="15%">{{ "Member" | localize }}</th>
+                                        <th width="15%">{{ "Total" | localize }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>{{ "Won" | localize }}</td>
+                                        <td>{{ shortlistResults['totalAwardAsLeader'] }}</td>
+                                        <td>{{ shortlistResults['totalAwardAsMember'] }}</td>
+                                        <td>{{ shortlistResults['totalAwardAsLeader'] + shortlistResults['totalAwardAsMember'] }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>{{ "Lost" | localize }}</td>
+                                        <td>{{ shortlistResults['totalLostAsLeader'] }}</td>
+                                        <td>{{ shortlistResults['totalLostAsMember'] }}</td>
+                                        <td>{{ shortlistResults['totalLostAsLeader'] + shortlistResults['totalLostAsMember'] }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>{{ "Unannounced" | localize }}</td>
+                                        <td>{{ shortlistResults['totalUnannouncedAsLeader'] }}</td>
+                                        <td>{{ shortlistResults['totalUnannouncedAsMember'] }}</td>
+                                        <td>{{ shortlistResults['totalUnannouncedAsLeader'] + shortlistResults['totalUnannouncedAsMember'] }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>{{ "Cancelled" | localize }}</td>
+                                        <td>{{ shortlistResults['totalCancelledAsLeader'] }}</td>
+                                        <td>{{ shortlistResults['totalCancelledAsMember'] }}</td>
+                                        <td>{{ shortlistResults['totalCancelledAsLeader'] + shortlistResults['totalCancelledAsMember'] }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col col-sm-6 col-md-6 col-lg-6">
+                            <br />
+                            <h5 style="color:gray"> {{ "ShortlistResultsAsLeader" | localize }} </h5>
+                            <hr style="height: 2px; background-color:lightgrey; margin-top:0px!important" />
+                            <div *ngIf="!shortlistLeaderScoresReady" style="height:220px; justify-content: center; text-align: center; display: flex; flex-direction: column;">
+                                <h3>{{ "NoDataAvailable" | localize }}</h3>
+                            </div>
+                            <div *ngIf="shortlistLeaderScoresReady" class="chart-wrapper">
+                                <canvas baseChart
+                                        [datasets]="shortlistLeaderScoresDataset"
+                                        [labels]="shortlistLeaderScoresLabel"
+                                        [options]="defaultChartOptions"
+                                        [colors]="defaultDoughnutChartColors"
+                                        [legend]="defaultChartLegend"
+                                        [chartType]="defaultDoughnutChartType"
+                                        [plugins]="defaultChartPlugins">
+                                </canvas>
+                            </div>
+                        </div>
+                        <div class="col col-sm-6 col-md-6 col-lg-6">
+                            <br />
+                            <h5 style="color:gray"> {{ "ShortlistResultsAsMember" | localize }} </h5>
+                            <hr style="height: 2px; background-color:lightgrey; margin-top:0px!important" />
+                            <div *ngIf="!shortlistMemberScoresReady" style="height:220px; justify-content: center; text-align: center; display: flex; flex-direction: column;">
+                                <h3>{{ "NoDataAvailable" | localize }}</h3>
+                            </div>
+                            <div *ngIf="shortlistMemberScoresReady" class="chart-wrapper">
+                                <canvas baseChart
+                                        [datasets]="shortlistMemberScoresDataset"
+                                        [labels]="shortlistMemberScoresLabel"
+                                        [options]="defaultChartOptions"
+                                        [colors]="defaultDoughnutChartColors"
+                                        [legend]="defaultChartLegend"
+                                        [chartType]="defaultDoughnutChartType"
+                                        [plugins]="defaultChartPlugins">
+                                </canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </mat-tab>
+        <mat-tab [label]="'OfferStatistics' | localize">
+            <br />
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col col-sm-6 col-md-6 col-lg-6">
+                        <table class="table table-hover table-striped">
+                            <thead>
+                                <tr>
+                                    <th width="55%">{{ "Score" | localize }}</th>
+                                    <th width="15%">{{ "Leader" | localize }}</th>
+                                    <th width="15%">{{ "Member" | localize }}</th>
+                                    <th width="15%">{{ "Total" | localize }}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let scoreStatisticKey of scoreStatisticKeys; let i = index">
+                                    <td>{{ scoreStatisticKey | localize }}</td>
+                                    <td>{{ scoreResults.scoresForLeader[scoreStatisticKey] != null ? scoreResults.scoresForLeader[scoreStatisticKey] : "-" }}</td>
+                                    <td>{{ scoreResults.scoresForMember[scoreStatisticKey] != null ? scoreResults.scoresForMember[scoreStatisticKey] : "-" }}</td>
+                                    <td>{{ scoreResults.scoresForTotal[scoreStatisticKey] != null ? scoreResults.scoresForTotal[scoreStatisticKey] : "-" }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col col-sm-6 col-md-6 col-lg-6">
+                        <div *ngIf="!scoreWithNullReady" style="height:220px; justify-content: center; text-align: center; display: flex; flex-direction: column;">
+                            <h3>{{ "NoDataAvailable" | localize }}</h3>
+                        </div>
+                        <div *ngIf="scoreWithNullReady" class="chart-wrapper">
+                            <canvas baseChart
+                                    [datasets]="scoreWithNullDataset"
+                                    [labels]="scoreWithNullLabel"
+                                    [options]="defaultChartOptions"
+                                    [colors]="defaultBarChartColors"
+                                    [legend]="defaultChartLegend"
+                                    [chartType]="defaultBarChartType"
+                                    [plugins]="defaultChartPlugins">
+                            </canvas>
+                        </div>
+                    </div>
+                    <div class="col col-sm-6 col-md-6 col-lg-6">
+                        <div *ngIf="!scoreWithoutNullReady" style="height:220px; justify-content: center; text-align: center; display: flex; flex-direction: column;">
+                            <h3>{{ "NoDataAvailable" | localize }}</h3>
+                        </div>
+                        <div *ngIf="scoreWithoutNullReady" class="chart-wrapper">
+                            <canvas baseChart
+                                    [datasets]="scoreWithoutNullDataset"
+                                    [labels]="scoreWithoutNullLabel"
+                                    [options]="defaultChartOptions"
+                                    [colors]="defaultBarChartColors"
+                                    [legend]="defaultChartLegend"
+                                    [chartType]="defaultBarChartType"
+                                    [plugins]="defaultChartPlugins">
+                            </canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </mat-tab>
+    </mat-tab-group>
+</div>

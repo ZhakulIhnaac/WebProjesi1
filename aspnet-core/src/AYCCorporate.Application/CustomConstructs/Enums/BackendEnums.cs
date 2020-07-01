@@ -1,0 +1,4 @@
+﻿namespace AYCCorporate.CustomConstructs.DatabaseEnums
+{
+   
+}

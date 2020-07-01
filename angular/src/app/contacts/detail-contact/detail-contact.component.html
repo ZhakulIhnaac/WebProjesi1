@@ -1,0 +1,43 @@
+<div class="col col-sm-11 col-md-11 col-lg-11">
+    <h1 mat-dialog-title>{{ 'ContactDetails' | localize }}</h1>
+</div>
+<div class="col col-sm-1 col-md-1 col-lg-1">
+    <mat-icon style="cursor: pointer" (click)="close(false)">cancel</mat-icon>
+</div>
+<div class="col col-sm-12 col-md-12 col-lg-12">
+    <div class="col col-sm-12 col-md-12 col-lg-12">
+        <h5>{{ "Title" | localize }}: </h5>
+        <p>{{ contact.title }}</p>
+    </div>
+    <div class="col col-sm-12 col-md-6 col-lg-6">
+        <h5>{{ "Name" | localize }}: </h5>
+        <p>{{ contact.name }} {{ contact.surname }}</p>
+    </div>
+    <div class="col col-sm-12 col-md-6 col-lg-6">
+        <h5>{{ "Sex" | localize }}: </h5>
+        <p>{{ contact.sex }}</p>
+    </div>
+    <div class="col col-sm-12 col-md-6 col-lg-6">
+        <h5>{{ "Nationality" | localize }}: </h5>
+        <p>{{ contact.nationality.countryName }}</p>
+    </div>
+    <div class="col col-sm-12 col-md-12 col-lg-12">
+        <hr style="height: 2px; background-color:lightgray" />
+        <h5>{{ "ContactChannels" | localize }} </h5>
+        <table class="table table-hover table-striped">
+            <thead>
+                <tr>
+                    <th width="50%">{{ "ChannelType" | localize }}</th>
+                    <th width="50%">{{ "ChannelContext" | localize }}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let contactChannel of contactChannelList">
+                    <td>{{ contactChannel.channelType.channelName }}</td>
+                    <td>{{ contactChannel.channelContext }}</td>
+                </tr>
+            </tbody>
+        </table>
+        <h5 *ngIf="contactChannelList.length == 0" style="font-size:12px; color: darkorange">{{ "TableNoElementWarning" | localize}}</h5>
+    </div>
+</div>

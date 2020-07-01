@@ -1,0 +1,366 @@
+<div [@routerTransition]>
+
+    <div class="block-header">
+        <h2>{{ 'AycSystemDashboard' | localize }}</h2>
+    </div>
+
+    <!-- Tender Status Counts -->
+    <div class="row clearfix">
+        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+            <div class="info-box bg-blue hover-expand-effect">
+                <div class="icon">
+                    <i class="material-icons">question_answer</i>
+                </div>
+                <div class="content">
+                    <div class="text">{{ 'Forecast' | localize }}</div>
+                    <p style="font-size: 25px; margin-top: -4px">{{ tenderStatusCounts?.forecasted }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+            <div class="info-box bg-pink hover-expand-effect">
+                <div class="icon">
+                    <i class="material-icons">lock_open</i>
+                </div>
+                <div class="content">
+                    <div class="text">{{ 'Open' | localize }}</div>
+                    <p style="font-size: 25px; margin-top: -4px">{{ tenderStatusCounts?.opened }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+            <div class="info-box bg-green hover-expand-effect">
+                <div class="icon">
+                    <i class="material-icons">lock</i>
+                </div>
+                <div class="content">
+                    <div class="text">{{ 'WaitingForShortlist' | localize }}</div>
+                    <p style="font-size: 25px; margin-top: -4px">{{ tenderStatusCounts?.closed }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+            <div class="info-box bg-teal hover-expand-effect">
+                <div class="icon">
+                    <i class="material-icons">pageview</i>
+                </div>
+                <div class="content">
+                    <div class="text">{{ 'Shortlisted' | localize }}</div>
+                    <p style="font-size: 25px; margin-top: -4px">{{ tenderStatusCounts?.shortlisted }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+            <div class="info-box bg-orange hover-expand-effect">
+                <div class="icon">
+                    <i class="material-icons">library_add_check</i>
+                </div>
+                <div class="content">
+                    <div class="text">{{ 'Awarded' | localize }}</div>
+                    <p style="font-size: 25px; margin-top: -4px">{{ tenderStatusCounts?.awarded }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+            <div class="info-box bg-red hover-expand-effect">
+                <div class="icon">
+                    <i class="material-icons">not_interested</i>
+                </div>
+                <div class="content">
+                    <div class="text">{{ 'Cancelled' | localize }}</div>
+                    <p style="font-size: 25px; margin-top: -4px">{{ tenderStatusCounts?.closed }}</p>
+                </div>
+            </div>
+        </div>
+        <button type="button" class="btn btn-primary btn-lg btn-block" (click)="sendWarningMail()">{{ 'SendWarningMail' | localize }}</button>
+    </div>
+    &nbsp;
+    <!-- #END# Tender Status Counts -->
+    <mat-tab-group mat-stretch-tabs>
+        <mat-tab [label]="'ForecestAndOpenTenders' | localize">
+            <!-- Forecast Tenders -->
+            <div class="row clearfix">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <div class="card">
+                        <div class="header">
+                            <div class="row clearfix">
+                                <div class="col-xs-12 col-sm-6">
+                                    <h2>{{ 'ForecastTenders' | localize }}</h2>
+                                </div>
+                            </div>
+                            <ul class="header-dropdown m-r--5">
+                                <li class="dropdown">
+                                    <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                        <i class="material-icons">more_vert</i>
+                                    </a>
+                                    <ul class="dropdown-menu pull-right">
+                                        <li><a href="javascript:void(0);">{{ 'ExcelOutput' | localize }}</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="body">
+                            <table class="table table-hover table-striped">
+                                <thead>
+                                    <tr>
+                                        <th width="10%">{{ "TenderNumber" | localize }}</th>
+                                        <th width="85%">{{ "TenderName" | localize }}</th>
+                                        <th width="5%">{{ "Details" | localize }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let forecastedTender of forecastedTendersListFiltered">
+                                        <td>{{ forecastedTender.tenderNumber }}</td>
+                                        <td>{{ forecastedTender.title }}</td>
+                                        <td style="text-align: center">
+                                            <mat-icon style="cursor: pointer" (click)="detailDialog(forecastedTender.id)">web_asset</mat-icon>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <button *ngIf="showForecastedLimit < forecastedTendersList.length" type="button" class="btn btn-primary btn-lg btn-block" (click)="showMoreForecastedTender(5)">{{ 'ShowMore' | localize }}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- #END# Forecast Tenders -->
+            <!-- Open Tenders -->
+            <div class="row clearfix">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <div class="card">
+                        <div class="header">
+                            <div class="row clearfix">
+                                <div class="col-xs-12 col-sm-6">
+                                    <h2>{{ 'OpenTenders' | localize }}</h2>
+                                </div>
+                            </div>
+                            <ul class="header-dropdown m-r--5">
+                                <li class="dropdown">
+                                    <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                        <i class="material-icons">more_vert</i>
+                                    </a>
+                                    <ul class="dropdown-menu pull-right">
+                                        <li><a href="javascript:void(0);">{{ 'ExcelOutput' | localize }}</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="body">
+                            <table class="table table-hover table-striped">
+                                <thead>
+                                    <tr>
+                                        <th width="10%">{{ "TenderNumber" | localize }}</th>
+                                        <th width="70%">{{ "TenderName" | localize }}</th>
+                                        <th width="15%">{{ "Deadline" | localize }}</th>
+                                        <th width="5%">{{ "Details" | localize }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor=" let openTender of openTendersListFiltered">
+                                        <td>{{ openTender.tenderNumber }}</td>
+                                        <td>{{ openTender.title }}</td>
+                                        <td [matTooltip]="'DeadlinePassedWarning' | localize" [matTooltipDisabled]="openTender.deadline > todaysDate" [ngStyle] = "openTender.deadline <= todaysDate ? {'background-color': 'red', 'color': 'white'} : {}">{{ openTender.deadline | date }}</td>
+                                        <td style="text-align: center">
+                                            <mat-icon style="cursor: pointer" (click)="detailDialog(openTender.id)">web_asset</mat-icon>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <button *ngIf="showOpenLimit < openTendersList.length" type="button" class="btn btn-primary btn-lg btn-block" (click)="showMoreOpenTender(5)">{{ 'ShowMore' | localize }}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- #END# Open Tenders -->
+        </mat-tab>
+        <mat-tab [label]="'AycConsultancy' | localize">
+            <!-- #END# Ayc Tenders Counts -->
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                <div class="card">
+                    <div class="header">
+                        <div class="row clearfix">
+                            <div class="col-xs-12 col-sm-6">
+                                <h2>{{ 'AycTenderResultCounts' | localize }}</h2>
+                            </div>
+                        </div>
+                        <ul class="header-dropdown m-r--5">
+                            <li class="dropdown">
+                                <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                    <i class="material-icons">more_vert</i>
+                                </a>
+                                <ul class="dropdown-menu pull-right">
+                                    <li><a href="javascript:void(0);">{{ 'ExcelOutput' | localize }}</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="body" style="height: 360px">
+                        <table class="table table-hover table-striped">
+                            <thead>
+                                <tr>
+                                    <th width="80%">{{ "Status" | localize }}</th>
+                                    <th width="20%">{{ "Number" | localize }}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor=" let aycResult of aycResultCount">
+                                    <td>{{ aycResult.status | localize }}</td>
+                                    <td>{{ aycResult.count }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <!-- #END# Ayc Tenders Counts -->
+            <!-- #END# Ayc Tenders Counts Graph -->
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                <div class="card">
+                    <div class="header">
+                        <div class="row clearfix">
+                            <div class="col-xs-12 col-sm-6">
+                                <h2>{{ 'AycTenderResultGraph' | localize }}</h2>
+                            </div>
+                        </div>
+                        <ul class="header-dropdown m-r--5">
+                            <li class="dropdown">
+                                <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                    <i class="material-icons">more_vert</i>
+                                </a>
+                                <ul class="dropdown-menu pull-right">
+                                    <li><a href="javascript:void(0);">{{ 'ExcelOutput' | localize }}</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="body" style="height: 360px">
+                        <div *ngIf="aycScoreReady" class="chart-wrapper">
+                            <canvas baseChart
+                                    [datasets]="aycScoreDataset"
+                                    [labels]="aycScoreLabel"
+                                    [options]="defaultChartOptions"
+                                    [colors]="defaultDoughnutChartColors"
+                                    [legend]="defaultChartLegend"
+                                    [chartType]="defaultDoughnutChartType"
+                                    [plugins]="defaultChartPlugins">
+                            </canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- #END# Ayc Tenders Counts Graph -->
+            <!-- Ayc Tenders -->
+            <div class="row clearfix">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <div class="card">
+                        <div class="header">
+                            <div class="row clearfix">
+                                <div class="col-xs-12 col-sm-6">
+                                    <h2>{{ 'TendersParticipated' | localize }}</h2>
+                                </div>
+                            </div>
+                            <ul class="header-dropdown m-r--5">
+                                <li class="dropdown">
+                                    <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                        <i class="material-icons">more_vert</i>
+                                    </a>
+                                    <ul class="dropdown-menu pull-right">
+                                        <li><a href="javascript:void(0);">{{ 'ExcelOutput' | localize }}</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="body">
+                            <mat-accordion>
+                                <mat-expansion-panel *ngFor="let aycTender of aycTenderList" style="margin:5px;">
+                                    <mat-expansion-panel-header style="height:1000px!important">
+                                        <mat-panel-title>
+                                            <div style="width:80%; display: flex; ">
+                                                <p style="margin-top: auto; margin-bottom: auto; margin-right: auto;">{{ aycTender.tenderNumber }} - {{ aycTender.projectName }}</p>
+                                            </div>
+                                            &nbsp;
+                                            <div style="width:20%; display: flex; ">
+                                                <p style="margin-top: auto; margin-bottom: auto;">{{ aycTender.status | localize }}</p>
+                                            </div>
+                                            <hr style="height:5px; margin:2px" />
+                                        </mat-panel-title>
+                                    </mat-expansion-panel-header>
+                                    <mat-expansion-panel-content>
+                                        <br />
+                                        <p><b>{{ 'ContractingAuthority' | localize }}: </b>{{ aycTender.contractingAuthority }}</p>
+                                        <p><b>{{ 'Partners' | localize }}: </b></p>
+                                        <div *ngFor="let partner of aycTender.partnerList">
+                                            <div class="col col-sm-10 col-md-10 col-lg-10">
+                                                <p>- {{ partner.name }}</p>
+                                            </div>
+                                            <div class="col col-sm-2 col-md-2 col-lg-2">
+                                                <span class="badge badge-primary" [ngStyle]="{'background-color': partner.role == 'Leader' ? 'rgba(0, 196, 240, 1)' : 'rgba(0, 196, 240, 0.5)'}">{{ partner.role }}</span>
+                                            </div>
+                                        </div>
+                                    </mat-expansion-panel-content>
+                                </mat-expansion-panel>
+                            </mat-accordion>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- #END# Ayc Tenders -->
+            <!-- Ayc Partners -->
+            <div class="row clearfix">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <div class="card">
+                        <div class="header">
+                            <div class="row clearfix">
+                                <div class="col-xs-12 col-sm-6">
+                                    <h2>{{ 'Partners' | localize }}</h2>
+                                </div>
+                            </div>
+                            <ul class="header-dropdown m-r--5">
+                                <li class="dropdown">
+                                    <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                        <i class="material-icons">more_vert</i>
+                                    </a>
+                                    <ul class="dropdown-menu pull-right">
+                                        <li><a href="javascript:void(0);">{{ 'ExcelOutput' | localize }}</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="body">
+                            <mat-accordion>
+                                <mat-expansion-panel *ngFor="let aycPartner of aycPartnerList" style="margin:5px;">
+                                    <mat-expansion-panel-header style="height:1000px!important">
+                                        <mat-panel-title>
+                                            <div style="width:80%; display: flex; ">
+                                                <p style="margin-top: auto; margin-bottom: auto; margin-right: auto;">{{ aycPartner.partnerName }}</p>
+                                            </div>
+                                            <div style="width:20%; display: flex; ">
+                                                <p style="margin-top: auto; margin-bottom: auto; margin-right: auto;">{{ 'TotalTenderCount' | localize}}: {{ aycPartner.tenderCount }}</p>
+                                            </div>
+                                            <hr style="height:5px; margin:2px" />
+                                        </mat-panel-title>
+                                    </mat-expansion-panel-header>
+                                    <mat-expansion-panel-content>
+                                        <br />
+                                        <p><b>{{ 'Tenders' | localize }}: </b></p>
+                                        <div *ngFor="let tender of aycPartner.tenderList">
+                                            <div class="col col-sm-10 col-md-10 col-lg-10">
+                                                <p>- {{ tender.title }}</p>
+                                            </div>
+                                            <div class="col col-sm-2 col-md-2 col-lg-2">
+                                                <p>- {{ tender.status }}</p>
+                                                <!--<span class="badge badge-primary" [ngStyle]="{'background-color': partner.role == 'Leader' ? 'rgba(0, 196, 240, 1)' : 'rgba(0, 196, 240, 0.5)'}">{{ partner.role }}</span>-->
+                                            </div>
+                                        </div>
+                                    </mat-expansion-panel-content>
+                                    t-
+                                </mat-expansion-panel>
+                            </mat-accordion>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- #END# Ayc Partners -->
+        </mat-tab>
+    </mat-tab-group>
+</div>

@@ -1,0 +1,125 @@
+<div class="col col-sm-11 col-md-11 col-lg-11">
+    <h1 mat-dialog-title *ngIf="_data.firmId != null">{{ "EditFirm" | localize }}</h1>
+    <h1 mat-dialog-title *ngIf="_data.firmId == null">{{ "AddFirm" | localize }}</h1>
+</div>
+<div class="col col-sm-1 col-md-1 col-lg-1">
+    <mat-icon style="cursor: pointer" (click)="close(false)">cancel</mat-icon>
+</div>
+<div class="col col-sm-12 col-md-12 col-lg-12">
+    <mat-tab-group>
+        <mat-tab [label]="'GeneralInformation' | localize">
+            <br />
+            <form autocomplete="off" #editFirmModal="ngForm" (ngSubmit)="save()">
+                <div class="col col-sm-6 col-md-6 col-lg-6">
+                    <mat-form-field>
+                        <input matInput
+                               name="FirmTitle"
+                               required
+                               [placeholder]="'FirmTitle' | localize"
+                               [(ngModel)]="firm.name"
+                               maxlength="128" />
+                    </mat-form-field>
+                </div>
+                <div class="col col-sm-6 col-md-6 col-lg-6">
+                    <mat-form-field>
+                        <mat-select [placeholder]="l('Country')"
+                                    [(ngModel)]="firm.countryId"
+                                    name="Country"
+                                    required>
+                            <mat-option [disabled]="true">
+                                <input matInput
+                                       name="countrySelectBoxFilter"
+                                       [(ngModel)]="countrySelectBoxFilter"
+                                       [placeholder]="l('Search')"
+                                       (ngModelChange)="filterCountry()"
+                                       [ngModelOptions]="{standalone: true}" />
+                            </mat-option>
+                            <mat-option *ngFor="let country of countryListFiltered"
+                                        [value]="country.id">{{ country.countryName }}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="col col-sm-6 col-md-6 col-lg-6">
+                    <mat-form-field>
+                        <input matInput
+                               name="Phone"
+                               [placeholder]="'Phone' | localize"
+                               [(ngModel)]="firm.phone"
+                               maxlength="32" />
+                    </mat-form-field>
+                    <mat-form-field>
+                        <input matInput
+                               name="Fax"
+                               [placeholder]="'Fax' | localize"
+                               [(ngModel)]="firm.fax"
+                               maxlength="32" />
+                    </mat-form-field>
+                </div>
+                <div class="col col-sm-6 col-md-6 col-lg-6">
+                    <mat-form-field>
+                        <input matInput
+                               name="Email"
+                               [placeholder]="'Email' | localize"
+                               [(ngModel)]="firm.eMail"
+                               maxlength="64" />
+                    </mat-form-field>
+                    <mat-form-field>
+                        <input matInput
+                               name="Website"
+                               [placeholder]="'Website' | localize"
+                               [(ngModel)]="firm.website"
+                               maxlength="64" />
+                    </mat-form-field>
+                </div>
+            </form>
+        </mat-tab>
+        <mat-tab [label]="'TransferFirm' | localize" *ngIf="_data.firmId != null">
+            <br />
+            <form autocomplete="off" #editFirmModal="ngForm" (ngSubmit)="save()">
+                <div class="col col-sm-10 col-md-10 col-lg-10">
+                    <mat-form-field>
+                        <mat-select [placeholder]="l('FirmToTransfer')"
+                                    [(ngModel)]="originalFirm"
+                                    name="firmToTransfer">
+                            <mat-option [disabled]="true">
+                                <input matInput
+                                       name="firmSelectBoxFilter"
+                                       [(ngModel)]="firmSelectBoxFilter"
+                                       [placeholder]="l('Search')"
+                                       (ngModelChange)="filterFirm()"
+                                       [ngModelOptions]="{standalone: true}" />
+                            </mat-option>
+                            <mat-option *ngFor="let firm of firmListFiltered"
+                                        [value]="firm">{{ firm.name }} ({{ firm.country.countryName }})</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="col col-sm-2 col-md-2 col-lg-2">
+                    <button mat-flat-button
+                            type="button"
+                            flex="15"
+                            color="primary"
+                            [disabled]="originalFirm == undefined"
+                            (click)="transferFirm()">
+                        {{ "Transfer" | localize }}
+                    </button>
+                </div>
+            </form>
+        </mat-tab>
+    </mat-tab-group>
+    <div mat-dialog-actions align="end">
+        <button mat-flat-button
+                type="button"
+                flex="15"
+                color="primary"
+                [disabled]="!editFirmModal.form.valid || saving"
+                (click)="save()">
+            {{ "Save" | localize }}
+        </button>
+    </div>
+</div>
+
+
+
+
+

@@ -1,0 +1,96 @@
+<div class="col col-sm-9 col-md-9 col-lg-9">
+    <h1 mat-dialog-title>{{ tender.title }} - {{ tender.location?.countryName }}</h1>
+</div>
+<div class="col col-sm-2 col-md-2 col-lg-2">
+    <button mat-raised-button disabled [ngStyle]="{'background-color': eStatusColorCodes[tender.statusId -1]}">
+        <h5 style="color: white">{{ eStatus[tender.statusId -1] | localize }}</h5>
+    </button>
+</div>
+<div class="col col-sm-1 col-md-1 col-lg-1">
+    <mat-icon style="cursor: pointer" (click)="close(false)">cancel</mat-icon>
+</div>
+<div class="col col-sm-12 col-md-12 col-lg-12">
+    <mat-tab-group mat-stretch-tabs>
+        <mat-tab [label]="'GeneralInformation' | localize">
+            <br />
+            <div class="col col-sm-2 col-md-2 col-lg-2" style="background-color: rgba(0, 148, 255, 0.2)">
+                <h5>{{ "ForecastDate" | localize }}: </h5>
+                <p>{{ tender.forecastDate | date : 'shortDate'  }}</p>
+            </div>
+            <div class="col col-sm-2 col-md-2 col-lg-2" [ngStyle]="{'background-color':tender.openingDate == null ? 'gray' : 'rgba(0, 148, 255, 0.3)' }">
+                <h5>{{ "OpenDate" | localize }}: </h5>
+                <p>{{ tender.openingDate == null ? '-' : tender.openingDate | date : 'shortDate' }}</p>
+            </div>
+            <div class="col col-sm-2 col-md-2 col-lg-2" [ngStyle]="{'background-color':tender.closingDate == null ? 'gray' : 'rgba(0, 148, 255, 0.4)' }">
+                <h5>{{ "CloseDate" | localize }}: </h5>
+                <p>{{ tender.closingDate == null ? '-' : tender.closingDate | date : 'shortDate' }}</p>
+            </div>
+            <div class="col col-sm-2 col-md-2 col-lg-2" [ngStyle]="{'background-color':tender.shortlistDate == null ? 'gray' : 'rgba(0, 148, 255, 0.5)' }">
+                <h5>{{ "ShortlistDate" | localize }}: </h5>
+                <p>{{ tender.shortlistDate == null ? '-' : tender.shortlistDate | date : 'shortDate' }}</p>
+            </div>
+            <div class="col col-sm-2 col-md-2 col-lg-2" [ngStyle]="{'background-color':tender.awardingDate == null ? 'gray' : 'rgba(0, 148, 255, 0.6)' }">
+                <h5>{{ "AwardDate" | localize }}: </h5>
+                <p>{{ tender.awardingDate == null ? '-' : tender.awardingDate | date : 'shortDate' }}</p>
+            </div>
+            <div class="col col-sm-2 col-md-2 col-lg-2" [ngStyle]="{'background-color':tender.cancellationDate == null ? 'gray' : 'rgba(229, 42, 42, 0.88)' }">
+                <h5>{{ "CancellationDate" | localize }}: </h5>
+                <p>{{ tender.cancellationDate == null ? '-' : tender.cancellationDate | date : 'shortDate' }}</p>
+            </div>
+            <div class="col col-sm-6 col-md-6 col-lg-6">
+                <h5>{{ "TenderNumber" | localize }}: </h5>
+                <p>{{ tender.tenderNumber }}</p>
+
+                <h5>{{ "TenderType" | localize }}: </h5>
+                <p>{{ eTenderType[tender.typeId -1] | localize }}</p>
+            </div>
+            <div class="col col-sm-6 col-md-6 col-lg-6">
+                <h5>{{ "MaximumBudget" | localize }}: </h5>
+                <p>{{ tender.maximumBudget | number }} {{ tender.currency?.currencyCode }}</p>
+
+                <h5>{{ "Deadline" | localize }}: </h5>
+                <p>{{ tender.deadline | date : 'shortDate' }}</p>
+            </div>
+            <div class="col col-sm-12 col-md-12 col-lg-12">
+                <h5>{{ "JobDefinition" | localize }}: </h5>
+                <p>{{ tender.description }}</p>
+            </div>
+            <div class="col col-sm-12 col-md-12 col-lg-12">
+                <h5>{{ "Criterias" | localize }}: </h5>
+                <p>{{ tender.criterias }}</p>
+            </div>
+        </mat-tab>
+        <mat-tab [label]="'ParticipatedConsortiums' | localize" [disabled]="tender.shortlistDate == null">
+            <br />
+            <mat-card style="margin:5px; cursor: pointer;" *ngFor="let participatedConsortium of participatedConsortiumList" (click)="createConsortiumDetailDialog(participatedConsortium.consortiumId)">
+                {{ "ConsortiumLedBy" | localize: participatedConsortium.firm.name + " ("+ participatedConsortium.firm.country.countryName + ")" }}
+            </mat-card>
+
+        </mat-tab>
+        <mat-tab [label]="'AwardInfo' | localize" [disabled]="tender.awardingDate == null">
+            <br />
+            <div class="col col-sm-3 col-md-3 col-lg-3">
+                <h5>{{ "AwardedPrice" | localize }}:</h5>
+                <p>{{ tender.awardedPrice | number }} {{ tender.currency?.currencyCode }}</p>
+            </div>
+            <div class="col col-sm-3 col-md-3 col-lg-3">
+                <h5>{{ "AwardedTechnicalScore" | localize }}:</h5>
+                <p>{{ tender.awardedTechnicalScore }}</p>
+            </div>
+            <div class="col col-sm-3 col-md-3 col-lg-3">
+                <h5>{{ "AwardedFinancialScore" | localize }}:</h5>
+                <p>{{ tender.awardedFinancialScore }}</p>
+            </div>
+            <div class="col col-sm-3 col-md-3 col-lg-3">
+                <h5>{{ "AwardedTotalScore" | localize }}:</h5>
+                <p>{{ tender.awardedTotalScore }}</p>
+            </div>
+            <div class="col col-sm-12 col-md-12 col-lg-12">
+                <h5>{{ "AwardedConsortium" | localize }}:</h5>
+                <mat-card style="margin:5px; cursor: pointer;" *ngFor="let awardedFirm of awardedFirmsList" (click)="createFirmDetailDialog(awardedFirm.firmId)">
+                    {{ awardedFirm.firm.name }} ({{ eFirmRole[awardedFirm.firmRole - 1] | localize }})
+                </mat-card>
+            </div>
+        </mat-tab>
+    </mat-tab-group>
+</div>

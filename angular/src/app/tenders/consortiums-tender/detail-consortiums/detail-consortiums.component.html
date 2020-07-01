@@ -1,0 +1,13 @@
+<div class="col col-sm-11 col-md-11 col-lg-11">
+    <h1 mat-dialog-title>{{ 'ConsortiumDetails' | localize }}</h1>
+</div>
+<div class="col col-sm-1 col-md-1 col-lg-1">
+    <mat-icon style="cursor: pointer" (click)="close(false)">cancel</mat-icon>
+</div>
+<div class="col col-sm-12 col-md-12 col-lg-12">
+    <mat-accordion>
+        <mat-card style="margin:5px; cursor: pointer;" *ngFor="let participatedConsortium of participatedConsortiumList" (click)="getFirmDetails(participatedConsortium.firmId)" matRipple class="clickable">
+            {{ participatedConsortium.firm.name }} ({{ participatedConsortium.firm.country.countryName }}) - {{ eFirmRole[participatedConsortium.firmRole - 1] | localize }}
+        </mat-card>
+    </mat-accordion>
+</div>

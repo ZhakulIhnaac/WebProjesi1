@@ -1,0 +1,633 @@
+<div class="col col-sm-11 col-md-11 col-lg-11">
+    <h1 mat-dialog-title>{{ 'FirmComparison' | localize }}</h1>
+</div>
+<div class="col col-sm-1 col-md-1 col-lg-1">
+    <mat-icon style="cursor: pointer" (click)="close(false)">cancel</mat-icon>
+</div>
+<div class="col col-sm-12 col-md-12 col-lg-12">
+    <mat-form-field>
+        <mat-select name="SecondFirm"
+                    [placeholder]="l('FirmToCompare')"
+                    [(ngModel)]="secondFirmId"
+                    (ngModelChange)="getSecondFirmStatistics()"
+                    required>
+            <mat-option [disabled]="true">
+                <input matInput
+                       name="firmSelectBoxFilter"
+                       [(ngModel)]="firmSelectBoxFilter"
+                       [placeholder]="l('Search')"
+                       (ngModelChange)="filterFirm()" />
+            </mat-option>
+            <mat-option *ngFor="let firm of firmListFiltered" [value]="firm.id">{{ firm.name }} ({{ firm.country.countryName }})</mat-option>
+        </mat-select>
+    </mat-form-field>
+</div>
+<div class="col col-sm-12 col-md-12 col-lg-12">
+    <mat-tab-group mat-stretch-tabs>
+        <mat-tab [label]="'ShortlistComparison' | localize">
+            <br />
+            <h5 style="color:gray"> {{ "ShortlistParticipationByRole" | localize }} </h5>
+            <hr style="height: 2px; background-color:lightgrey; margin-top:0px!important" />
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col col-sm-6 col-md-6 col-lg-6">
+                        <h5>{{ firstFirmName }}</h5>
+                    </div>
+                    <div class="col col-sm-6 col-md-6 col-lg-6">
+                        <h5>{{ secondFirmName }}</h5>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col col-sm-6 col-md-6 col-lg-6">
+                        <table mdbTable class="table table-bordered table-hover table-striped">
+                            <thead>
+                                <tr>
+                                    <th width="60%">{{ "Role" | localize }}</th>
+                                    <th width="20%">{{ "Number" | localize }}</th>
+                                    <th width="20%">{{ "Ratio" | localize }}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>{{ "Leader" | localize }}</td>
+                                    <td>{{ shortlistResultsOfFirstFirm['totalNumberAsLeader'] }}</td>
+                                    <td>{{ shortlistResultsOfFirstFirm['ratioAsLeader'] }}</td>
+                                </tr>
+                                <tr>
+                                    <td>{{ "Member" | localize }}</td>
+                                    <td>{{ shortlistResultsOfFirstFirm['totalNumberAsMember'] }}</td>
+                                    <td>{{ shortlistResultsOfFirstFirm['ratioAsMember'] }}</td>
+                                </tr>
+                                <tr>
+                                    <td>{{ "Total" | localize }}</td>
+                                    <td>{{ shortlistResultsOfFirstFirm['totalNumberAsLeader'] + shortlistResultsOfFirstFirm['totalNumberAsMember'] }}</td>
+                                    <td>{{ shortlistResultsOfFirstFirm['ratioAsLeader'] + shortlistResultsOfFirstFirm['ratioAsMember'] }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col col-sm-6 col-md-6 col-lg-6">
+                        <div *ngIf="secondFirmName == 'NoFirmSelected'" style="height:185px; justify-content: center; text-align: center; display: flex; flex-direction: column;">
+                            <h3>{{ "NoFirmSelected" | localize }}</h3>
+                        </div>
+                        <table *ngIf="secondFirmName != 'NoFirmSelected'" mdbTable class="table table-bordered table-hover table-striped">
+                            <thead>
+                                <tr>
+                                    <th width="60%">{{ "Role" | localize }}</th>
+                                    <th width="20%">{{ "Number" | localize }}</th>
+                                    <th width="20%">{{ "Ratio" | localize }}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>{{ "Leader" | localize }}</td>
+                                    <td>{{ shortlistResultsOfSecondFirm['totalNumberAsLeader'] }}</td>
+                                    <td>{{ shortlistResultsOfSecondFirm['ratioAsLeader'] }}</td>
+                                </tr>
+                                <tr>
+                                    <td>{{ "Member" | localize }}</td>
+                                    <td>{{ shortlistResultsOfSecondFirm['totalNumberAsMember'] }}</td>
+                                    <td>{{ shortlistResultsOfSecondFirm['ratioAsMember'] }}</td>
+                                </tr>
+                                <tr>
+                                    <td>{{ "Total" | localize }}</td>
+                                    <td>{{ shortlistResultsOfSecondFirm['totalNumberAsLeader'] + shortlistResultsOfSecondFirm['totalNumberAsMember'] }}</td>
+                                    <td>{{ shortlistResultsOfSecondFirm['ratioAsLeader'] + shortlistResultsOfSecondFirm['ratioAsMember'] }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <br />
+            <h5 style="color:gray"> {{ "RolesOfTheFirm" | localize }} </h5>
+            <hr style="height: 2px; background-color:lightgrey; margin-top:0px!important" />
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col col-sm-6 col-md-6 col-lg-6">
+                        <div *ngIf="!firstFirmShortlistRolesReady" style="height:220px; justify-content: center; text-align: center; display: flex; flex-direction: column;">
+                            <h3>{{ "NoDataAvailable" | localize }}</h3>
+                        </div>
+                        <div *ngIf="firstFirmShortlistRolesReady" class="chart-wrapper">
+                            <canvas baseChart
+                                    [datasets]="firstFirmShortlistRolesDataset"
+                                    [labels]="firstFirmShortlistRolesLabel"
+                                    [options]="defaultChartOptions"
+                                    [colors]="defaultDoughnutChartColors"
+                                    [legend]="defaultChartLegend"
+                                    [chartType]="defaultDoughnutChartType"
+                                    [plugins]="defaultChartPlugins">
+                            </canvas>
+                        </div>
+                    </div>
+                    <div class="col col-sm-6 col-md-6 col-lg-6">
+                        <div *ngIf="secondFirmName == 'NoFirmSelected'" style="height:220px; justify-content: center; text-align: center; display: flex; flex-direction: column;">
+                            <h3>{{ "NoFirmSelected" | localize }}</h3>
+                        </div>
+                        <div *ngIf="!secondFirmShortlistRolesReady && secondFirmName != 'NoFirmSelected'" style="height:220px; justify-content: center; text-align: center; display: flex; flex-direction: column;">
+                            <h3>{{ "NoDataAvailable" | localize }}</h3>
+                        </div>
+                        <div *ngIf="secondFirmShortlistRolesReady && secondFirmName != 'NoFirmSelected'" class="chart-wrapper">
+                            <canvas baseChart
+                                    [datasets]="secondFirmShortlistRolesDataset"
+                                    [labels]="secondFirmShortlistRolesLabel"
+                                    [options]="defaultChartOptions"
+                                    [colors]="defaultDoughnutChartColors"
+                                    [legend]="defaultChartLegend"
+                                    [chartType]="defaultDoughnutChartType"
+                                    [plugins]="defaultChartPlugins">
+                            </canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <br />
+            <h5 style="color:gray"> {{ "ShortlistResultsByRole" | localize }} </h5>
+            <hr style="height: 2px; background-color:lightgrey; margin-top:0px!important" />
+            <div class="container-fluid" style="border: 2px; border-color: lightgray">
+                <div class="row">
+                    <div class="col col-sm-6 col-md-6 col-lg-6">
+                        <table mdbTable class="table table-bordered table-hover table-striped">
+                            <thead>
+                                <tr>
+                                    <th width="55%">{{ "Result" | localize }}</th>
+                                    <th width="15%">{{ "Leader" | localize }}</th>
+                                    <th width="15%">{{ "Member" | localize }}</th>
+                                    <th width="15%">{{ "Total" | localize }}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>{{ "Won" | localize }}</td>
+                                    <td>{{ shortlistResultsOfFirstFirm['totalAwardAsLeader'] }}</td>
+                                    <td>{{ shortlistResultsOfFirstFirm['totalAwardAsMember'] }}</td>
+                                    <td>{{ shortlistResultsOfFirstFirm['totalAwardAsLeader'] + shortlistResultsOfFirstFirm['totalAwardAsMember'] }}</td>
+                                </tr>
+                                <tr>
+                                    <td>{{ "Lost" | localize }}</td>
+                                    <td>{{ shortlistResultsOfFirstFirm['totalLostAsLeader'] }}</td>
+                                    <td>{{ shortlistResultsOfFirstFirm['totalLostAsMember'] }}</td>
+                                    <td>{{ shortlistResultsOfFirstFirm['totalLostAsLeader'] + shortlistResultsOfFirstFirm['totalLostAsMember'] }}</td>
+                                </tr>
+                                <tr>
+                                    <td>{{ "Unannounced" | localize }}</td>
+                                    <td>{{ shortlistResultsOfFirstFirm['totalUnannouncedAsLeader'] }}</td>
+                                    <td>{{ shortlistResultsOfFirstFirm['totalUnannouncedAsMember'] }}</td>
+                                    <td>{{ shortlistResultsOfFirstFirm['totalUnannouncedAsLeader'] + shortlistResultsOfFirstFirm['totalUnannouncedAsMember'] }}</td>
+                                </tr>
+                                <tr>
+                                    <td>{{ "Cancelled" | localize }}</td>
+                                    <td>{{ shortlistResultsOfFirstFirm['totalCancelledAsLeader'] }}</td>
+                                    <td>{{ shortlistResultsOfFirstFirm['totalCancelledAsMember'] }}</td>
+                                    <td>{{ shortlistResultsOfFirstFirm['totalCancelledAsLeader'] + shortlistResultsOfFirstFirm['totalCancelledAsMember'] }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col col-sm-6 col-md-6 col-lg-6">
+                        <div *ngIf="secondFirmName == 'NoFirmSelected'" style="height:185px; justify-content: center; text-align: center; display: flex; flex-direction: column;">
+                            <h3>{{ "NoFirmSelected" | localize }}</h3>
+                        </div>
+                        <table *ngIf="secondFirmName != 'NoFirmSelected'" mdbTable class="table table-bordered table-hover table-striped" [busy]="secondFirmShortlistStatisticsLoading">
+                            <thead>
+                                <tr>
+                                    <th width="55%">{{ "Result" | localize }}</th>
+                                    <th width="15%">{{ "Leader" | localize }}</th>
+                                    <th width="15%">{{ "Member" | localize }}</th>
+                                    <th width="15%">{{ "Total" | localize }}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>{{ "Won" | localize }}</td>
+                                    <td>{{ shortlistResultsOfSecondFirm['totalAwardAsLeader'] }}</td>
+                                    <td>{{ shortlistResultsOfSecondFirm['totalAwardAsMember'] }}</td>
+                                    <td>{{ shortlistResultsOfSecondFirm['totalAwardAsLeader'] + shortlistResultsOfSecondFirm['totalAwardAsMember'] }}</td>
+                                </tr>
+                                <tr>
+                                    <td>{{ "Lost" | localize }}</td>
+                                    <td>{{ shortlistResultsOfSecondFirm['totalLostAsLeader'] }}</td>
+                                    <td>{{ shortlistResultsOfSecondFirm['totalLostAsMember'] }}</td>
+                                    <td>{{ shortlistResultsOfSecondFirm['totalLostAsLeader'] + shortlistResultsOfSecondFirm['totalLostAsMember'] }}</td>
+                                </tr>
+                                <tr>
+                                    <td>{{ "Unannounced" | localize }}</td>
+                                    <td>{{ shortlistResultsOfSecondFirm['totalUnannouncedAsLeader'] }}</td>
+                                    <td>{{ shortlistResultsOfSecondFirm['totalUnannouncedAsMember'] }}</td>
+                                    <td>{{ shortlistResultsOfSecondFirm['totalUnannouncedAsLeader'] + shortlistResultsOfSecondFirm['totalUnannouncedAsMember'] }}</td>
+                                </tr>
+                                <tr>
+                                    <td>{{ "Cancelled" | localize }}</td>
+                                    <td>{{ shortlistResultsOfSecondFirm['totalCancelledAsLeader'] }}</td>
+                                    <td>{{ shortlistResultsOfSecondFirm['totalCancelledAsMember'] }}</td>
+                                    <td>{{ shortlistResultsOfSecondFirm['totalCancelledAsLeader'] + shortlistResultsOfSecondFirm['totalCancelledAsMember'] }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <br />
+            <h5 style="color:gray"> {{ "ShortlistResultsAsLeader" | localize }} </h5>
+            <hr style="height: 2px; background-color:lightgrey; margin-top:0px!important" />
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col col-sm-6 col-md-6 col-lg-6">
+                        <div *ngIf="!firstFirmShortlistLeaderScoresReady" style="height:220px; justify-content: center; text-align: center; display: flex; flex-direction: column;">
+                            <h3>{{ "NoDataAvailable" | localize }}</h3>
+                        </div>
+                        <div *ngIf="firstFirmShortlistLeaderScoresReady" class="chart-wrapper">
+                            <canvas baseChart
+                                    [datasets]="firstFirmShortlistLeaderScoresDataset"
+                                    [labels]="firstFirmShortlistLeaderScoresLabel"
+                                    [options]="defaultChartOptions"
+                                    [colors]="defaultDoughnutChartColors"
+                                    [legend]="defaultChartLegend"
+                                    [chartType]="defaultDoughnutChartType"
+                                    [plugins]="defaultChartPlugins">
+                            </canvas>
+                        </div>
+                    </div>
+                    <div class="col col-sm-6 col-md-6 col-lg-6">
+                        <div *ngIf="secondFirmName == 'NoFirmSelected'" style="height:220px; justify-content: center; text-align: center; display: flex; flex-direction: column;">
+                            <h3>{{ "NoFirmSelected" | localize }}</h3>
+                        </div>
+                        <div *ngIf="!secondFirmShortlistLeaderScoresReady && secondFirmName != 'NoFirmSelected'" style="height:220px; justify-content: center; text-align: center; display: flex; flex-direction: column;">
+                            <h3>{{ "NoDataAvailable" | localize }}</h3>
+                        </div>
+                        <div *ngIf="secondFirmShortlistLeaderScoresReady && secondFirmName != 'NoFirmSelected'" class="chart-wrapper">
+                            <canvas baseChart
+                                    [datasets]="secondFirmShortlistLeaderScoresDataset"
+                                    [labels]="secondFirmShortlistLeaderScoresLabel"
+                                    [options]="defaultChartOptions"
+                                    [colors]="defaultDoughnutChartColors"
+                                    [legend]="defaultChartLegend"
+                                    [chartType]="defaultDoughnutChartType"
+                                    [plugins]="defaultChartPlugins">
+                            </canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <br />
+            <h5 style="color:gray"> {{ "ShortlistResultsAsMember" | localize }} </h5>
+            <hr style="height: 2px; background-color:lightgrey; margin-top:0px!important" />
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col col-sm-6 col-md-6 col-lg-6">
+                        <div *ngIf="!firstFirmShortlistMemberScoresReady" style="height:220px; justify-content: center; text-align: center; display: flex; flex-direction: column;">
+                            <h3>{{ "NoDataAvailable" | localize }}</h3>
+                        </div>
+                        <div *ngIf="firstFirmShortlistMemberScoresReady" class="chart-wrapper">
+                            <canvas baseChart
+                                    [datasets]="firstFirmShortlistMemberScoresDataset"
+                                    [labels]="firstFirmShortlistMemberScoresLabel"
+                                    [options]="defaultChartOptions"
+                                    [colors]="defaultDoughnutChartColors"
+                                    [legend]="defaultChartLegend"
+                                    [chartType]="defaultDoughnutChartType"
+                                    [plugins]="defaultChartPlugins">
+                            </canvas>
+                        </div>
+                    </div>
+                    <div class="col col-sm-6 col-md-6 col-lg-6">
+                        <div *ngIf="secondFirmName == 'NoFirmSelected'" style="height:220px; justify-content: center; text-align: center; display: flex; flex-direction: column;">
+                            <h3>{{ "NoFirmSelected" | localize }}</h3>
+                        </div>
+                        <div *ngIf="!secondFirmShortlistMemberScoresReady && secondFirmName != 'NoFirmSelected'" style="height:220px; justify-content: center; text-align: center; display: flex; flex-direction: column;">
+                            <h3>{{ "NoDataAvailable" | localize }}</h3>
+                        </div>
+                        <div *ngIf="secondFirmShortlistMemberScoresReady && secondFirmName != 'NoFirmSelected'" class="chart-wrapper">
+                            <canvas baseChart
+                                    [datasets]="secondFirmShortlistMemberScoresDataset"
+                                    [labels]="secondFirmShortlistMemberScoresLabel"
+                                    [options]="defaultChartOptions"
+                                    [colors]="defaultDoughnutChartColors"
+                                    [legend]="defaultChartLegend"
+                                    [chartType]="defaultDoughnutChartType"
+                                    [plugins]="defaultChartPlugins">
+                            </canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </mat-tab>
+
+        <mat-tab [label]="'ScoreComparison' | localize">
+            <br />
+            <h5 style="color:gray"> {{ "FirmsScoreResults" | localize }} </h5>
+            <hr style="height: 2px; background-color:lightgrey; margin-top:0px!important" />
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col col-sm-6 col-md-6 col-lg-6">
+                        <h5>{{ firstFirmName }}</h5>
+                    </div>
+                    <div class="col col-sm-6 col-md-6 col-lg-6">
+                        <h5>{{ secondFirmName }}</h5>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col col-sm-6 col-md-6 col-lg-6">
+                        <table class="table table-hover table-striped">
+                            <thead>
+                                <tr>
+                                    <th width="55%">{{ "Score" | localize }}</th>
+                                    <th width="15%">{{ "Leader" | localize }}</th>
+                                    <th width="15%">{{ "Member" | localize }}</th>
+                                    <th width="15%">{{ "Total" | localize }}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let scoreStatisticKey of scoreStatisticKeys; let i = index">
+                                    <td>{{ scoreStatisticKey | localize }}</td>
+                                    <td>{{ scoreResultsOfFirstFirm.scoresForLeader[scoreStatisticKey] != null ? scoreResultsOfFirstFirm.scoresForLeader[scoreStatisticKey] : "-" }}</td>
+                                    <td>{{ scoreResultsOfFirstFirm.scoresForMember[scoreStatisticKey] != null ? scoreResultsOfFirstFirm.scoresForMember[scoreStatisticKey] : "-" }}</td>
+                                    <td>{{ scoreResultsOfFirstFirm.scoresForTotal[scoreStatisticKey] != null ? scoreResultsOfFirstFirm.scoresForTotal[scoreStatisticKey] : "-" }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col col-sm-6 col-md-6 col-lg-6">
+                        <div *ngIf="secondFirmName == 'NoFirmSelected'" style="height:220px; justify-content: center; text-align: center; display: flex; flex-direction: column;">
+                            <h3>{{ "NoFirmSelected" | localize }}</h3>
+                        </div>
+                        <table *ngIf="secondFirmName != 'NoFirmSelected' && scoreStatisticOfSecondFirmReady" class="table table-hover table-striped">
+                            <thead>
+                                <tr>
+                                    <th width="55%">{{ "Score" | localize }}</th>
+                                    <th width="15%">{{ "Leader" | localize }}</th>
+                                    <th width="15%">{{ "Member" | localize }}</th>
+                                    <th width="15%">{{ "Total" | localize }}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let scoreStatisticKey of scoreStatisticKeys; let i = index">
+                                    <td>{{ scoreStatisticKey | localize }}</td>
+                                    <td>{{ scoreResultsOfSecondFirm.scoresForLeader[scoreStatisticKey] != null ? scoreResultsOfSecondFirm.scoresForLeader[scoreStatisticKey] : "-" }}</td>
+                                    <td>{{ scoreResultsOfSecondFirm.scoresForMember[scoreStatisticKey] != null ? scoreResultsOfSecondFirm.scoresForMember[scoreStatisticKey] : "-" }}</td>
+                                    <td>{{ scoreResultsOfSecondFirm.scoresForTotal[scoreStatisticKey] != null ? scoreResultsOfSecondFirm.scoresForTotal[scoreStatisticKey] : "-" }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <br />
+            <h5 style="color:gray"> {{ "FirmScoreResultsAsLeader" | localize }} </h5>
+            <hr style="height: 2px; background-color:lightgrey; margin-top:0px!important" />
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col col-sm-6 col-md-6 col-lg-6">
+                        <div *ngIf="!firstFirmScoreWithNullReady" style="height:220px; justify-content: center; text-align: center; display: flex; flex-direction: column;">
+                            <h3>{{ "NoDataAvailable" | localize }}</h3>
+                        </div>
+                        <div *ngIf="firstFirmScoreWithNullReady" class="chart-wrapper">
+                            <canvas baseChart
+                                    [datasets]="firstFirmScoreWithNullDataset"
+                                    [labels]="firstFirmScoreWithNullLabel"
+                                    [options]="defaultChartOptions"
+                                    [colors]="defaultBarChartColors"
+                                    [legend]="defaultChartLegend"
+                                    [chartType]="defaultBarChartType"
+                                    [plugins]="defaultChartPlugins">
+                            </canvas>
+                        </div>
+                    </div>
+                    <div class="col col-sm-6 col-md-6 col-lg-6">
+                        <div *ngIf="secondFirmName == 'NoFirmSelected'" style="height:220px; justify-content: center; text-align: center; display: flex; flex-direction: column;">
+                            <h3>{{ "NoFirmSelected" | localize }}</h3>
+                        </div>
+                        <div *ngIf="!secondFirmShortlistLeaderScoresReady && secondFirmName != 'NoFirmSelected'" style="height:220px; justify-content: center; text-align: center; display: flex; flex-direction: column;">
+                            <h3>{{ "NoDataAvailable" | localize }}</h3>
+                        </div>
+                        <div *ngIf="secondFirmScoreWithNullReady && secondFirmName != 'NoFirmSelected'" class="chart-wrapper">
+                            <canvas baseChart
+                                    [datasets]="secondFirmScoreWithNullDataset"
+                                    [labels]="secondFirmScoreWithNullLabel"
+                                    [options]="defaultChartOptions"
+                                    [colors]="defaultBarChartColors"
+                                    [legend]="defaultChartLegend"
+                                    [chartType]="defaultBarChartType"
+                                    [plugins]="defaultChartPlugins">
+                            </canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <br />
+            <h5 style="color:gray"> {{ "FirmScoreResultsAsMember" | localize }} </h5>
+            <hr style="height: 2px; background-color:lightgrey; margin-top:0px!important" />
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col col-sm-6 col-md-6 col-lg-6">
+                        <div *ngIf="!firstFirmScoreWithoutNullReady" style="height:220px; justify-content: center; text-align: center; display: flex; flex-direction: column;">
+                            <h3>{{ "NoDataAvailable" | localize }}</h3>
+                        </div>
+                        <div *ngIf="firstFirmScoreWithoutNullReady" class="chart-wrapper">
+                            <canvas baseChart
+                                    [datasets]="firstFirmScoreWithoutNullDataset"
+                                    [labels]="firstFirmScoreWithoutNullLabel"
+                                    [options]="defaultChartOptions"
+                                    [colors]="defaultBarChartColors"
+                                    [legend]="defaultChartLegend"
+                                    [chartType]="defaultBarChartType"
+                                    [plugins]="defaultChartPlugins">
+                            </canvas>
+                        </div>
+                    </div>
+                    <div class="col col-sm-6 col-md-6 col-lg-6">
+                        <div *ngIf="secondFirmName == 'NoFirmSelected'" style="height:220px; justify-content: center; text-align: center; display: flex; flex-direction: column;">
+                            <h3>{{ "NoFirmSelected" | localize }}</h3>
+                        </div>
+                        <div *ngIf="!secondFirmShortlistLeaderScoresReady && secondFirmName != 'NoFirmSelected'" style="height:220px; justify-content: center; text-align: center; display: flex; flex-direction: column;">
+                            <h3>{{ "NoDataAvailable" | localize }}</h3>
+                        </div>
+                        <div *ngIf="secondFirmScoreWithoutNullReady && secondFirmName != 'NoFirmSelected'" class="chart-wrapper">
+                            <canvas baseChart
+                                    [datasets]="secondFirmScoreWithoutNullDataset"
+                                    [labels]="secondFirmScoreWithoutNullLabel"
+                                    [options]="defaultChartOptions"
+                                    [colors]="defaultBarChartColors"
+                                    [legend]="defaultChartLegend"
+                                    [chartType]="defaultBarChartType"
+                                    [plugins]="defaultChartPlugins">
+                            </canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </mat-tab>
+        <mat-tab [label]="'ShortlistScoresAgainstEachOther' | localize">
+            <div *ngIf="scoresAgainstEachOtherReady">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col col-sm-6 col-md-6 col-lg-6">
+                            <table class="table table-hover table-striped">
+                                <thead>
+                                    <tr>
+                                        <th width="80%">{{ "FirmName" | localize }}</th>
+                                        <th width="20%">{{ "AwardCount" | localize }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>{{ firstFirmName }}</td>
+                                        <td>{{ firstFirmAwardedList.length != null ? firstFirmAwardedList.length : "-" }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>{{ secondFirmName }}</td>
+                                        <td>{{ secondFirmAwardedList.length != null ? secondFirmAwardedList.length : "-" }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col col-sm-6 col-md-6 col-lg-6">
+                            <div *ngIf="secondFirmName == 'NoFirmSelected'" style="height:220px; justify-content: center; text-align: center; display: flex; flex-direction: column;">
+                                <h3>{{ "NoFirmSelected" | localize }}</h3>
+                            </div>
+                            <div *ngIf="!scoresAgainstEachOtherReady && secondFirmName != 'NoFirmSelected'" style="height:220px; justify-content: center; text-align: center; display: flex; flex-direction: column;">
+                                <h3>{{ "NoDataAvailable" | localize }}</h3>
+                            </div>
+                            <div *ngIf="scoresAgainstEachOtherReady" class="chart-wrapper">
+                                <canvas baseChart
+                                        [datasets]="scoresAgainstEachOtherDataset"
+                                        [labels]="scoresAgainstEachOtherLabel"
+                                        [options]="defaultChartOptions"
+                                        [colors]="defaultDoughnutChartColors"
+                                        [legend]="defaultChartLegend"
+                                        [chartType]="defaultDoughnutChartType"
+                                        [plugins]="defaultChartPlugins">
+                                </canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col col-sm-12 col-md-12 col-lg-12">
+                            <h5>{{ "UnannouncedTenders" | localize }}</h5>
+                            <hr style="height: 2px; background-color:lightgrey" />
+                            <table class="table table-bordered table-hover table-striped" [busy]="unannouncedTendersReady">
+                                <thead>
+                                    <tr>
+                                        <th width="5%">{{ "Year" | localize }}</th>
+                                        <th width="15%">{{ "TenderNumber" | localize }}</th>
+                                        <th width="60%">{{ "TenderName" | localize }}</th>
+                                        <th width="10%">{{ "FirstFirmRole" | localize }}</th>
+                                        <th width="10%">{{ "SecondFirmRole" | localize }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let unannouncedTender of unannouncedTenderList">
+                                        <td>{{ unannouncedTender.year }}</td>
+                                        <td>{{ unannouncedTender.tenderNumber }}</td>
+                                        <td>{{ unannouncedTender.tenderName }}</td>
+                                        <td>{{ unannouncedTender.firstFirmRole | firmRole | localize }}</td>
+                                        <td>{{ unannouncedTender.secondFirmRole | firmRole | localize }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col col-sm-12 col-md-12 col-lg-12">
+                            <h5>{{ "TendersFirstFirmWon" | localize }}</h5>
+                            <hr style="height: 2px; background-color:lightgrey" />
+                            <table class="table table-bordered table-hover table-striped" [busy]="firstFirmAwardedTendersReady">
+                                <thead>
+                                    <tr>
+                                        <th width="5%">{{ "Year" | localize }}</th>
+                                        <th width="15%">{{ "TenderNumber" | localize }}</th>
+                                        <th width="60%">{{ "TenderName" | localize }}</th>
+                                        <th width="10%">{{ "FirstFirmRole" | localize }}</th>
+                                        <th width="10%">{{ "SecondFirmRole" | localize }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let firstFirmAwarded of firstFirmAwardedList">
+                                        <td>{{ firstFirmAwarded.year }}</td>
+                                        <td>{{ firstFirmAwarded.tenderNumber }}</td>
+                                        <td>{{ firstFirmAwarded.tenderName }}</td>
+                                        <td>{{ firstFirmAwarded.firstFirmRole | firmRole | localize }}</td>
+                                        <td>{{ firstFirmAwarded.secondFirmRole | firmRole | localize }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col col-sm-12 col-md-12 col-lg-12">
+                            <h5>{{ "TendersSecondFirmWon" | localize }}</h5>
+                            <hr style="height: 2px; background-color:lightgrey" />
+                            <table class="table table-bordered table-hover table-striped" [busy]="secondFirmAwardedTendersReady">
+                                <thead>
+                                    <tr>
+                                        <th width="5%">{{ "Year" | localize }}</th>
+                                        <th width="15%">{{ "TenderNumber" | localize }}</th>
+                                        <th width="60%">{{ "TenderName" | localize }}</th>
+                                        <th width="10%">{{ "FirstFirmRole" | localize }}</th>
+                                        <th width="10%">{{ "SecondFirmRole" | localize }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let secondFirmAwarded of secondFirmAwardedList">
+                                        <td>{{ secondFirmAwarded.year }}</td>
+                                        <td>{{ secondFirmAwarded.tenderNumber }}</td>
+                                        <td>{{ secondFirmAwarded.tenderName }}</td>
+                                        <td>{{ secondFirmAwarded.firstFirmRole | firmRole | localize }}</td>
+                                        <td>{{ secondFirmAwarded.secondFirmRole | firmRole | localize }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col col-sm-12 col-md-12 col-lg-12">
+                            <h5>{{ "BothLostTenders" | localize }}</h5>
+                            <hr style="height: 2px; background-color:lightgrey" />
+                            <table class="table table-bordered table-hover table-striped" [busy]="unannouncedTendersReady">
+                                <thead>
+                                    <tr>
+                                        <th width="5%">{{ "Year" | localize }}</th>
+                                        <th width="15%">{{ "TenderNumber" | localize }}</th>
+                                        <th width="60%">{{ "TenderName" | localize }}</th>
+                                        <th width="10%">{{ "FirstFirmRole" | localize }}</th>
+                                        <th width="10%">{{ "SecondFirmRole" | localize }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let bothLostTender of bothLostTendersList">
+                                        <td>{{ bothLostTender.year }}</td>
+                                        <td>{{ bothLostTender.tenderNumber }}</td>
+                                        <td>{{ bothLostTender.tenderName }}</td>
+                                        <td>{{ bothLostTender.firstFirmRole | firmRole | localize }}</td>
+                                        <td>{{ bothLostTender.secondFirmRole | firmRole | localize }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </mat-tab>
+    </mat-tab-group>
+</div>
+

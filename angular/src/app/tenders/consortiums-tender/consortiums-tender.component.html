@@ -1,0 +1,46 @@
+<div class="col col-sm-11 col-md-11 col-lg-11">
+    <h1 mat-dialog-title>{{ "Consortiums" | localize}}</h1>
+</div>
+<div class="col col-sm-1 col-md-1 col-lg-1">
+    <mat-icon style="cursor: pointer" (click)="close(false)">cancel</mat-icon>
+</div>
+<div class="col col-sm-12 col-md-12 col-lg-12">
+    <div class="body table-responsive">
+        <h6 *ngIf="firmConsortiumList.length == 0" style="align-self: center">{{ "NoConsortiumExists" | localize }}</h6>
+        <table *ngIf="firmConsortiumList.length > 0" class="table table-hover table-striped" [busy]="isTableLoading">
+            <thead>
+                <tr>
+                    <th width="90%">{{ "Consortiums" | localize }}</th>
+                    <th width="10%">{{ "Actions" | localize }}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor=" let firmConsortium of firmConsortiumList">
+                    <td>{{ "ConsortiumLedBy" | localize: firmConsortium.firm.name + " ("+ firmConsortium.firm.country.countryName + ")" }}</td>
+                    <td>
+                        <button class="action-button" mat-icon-button [matMenuTriggerFor]="actionsMenu">
+                            <mat-icon>menu</mat-icon>
+                        </button>
+                        <mat-menu #actionsMenu="matMenu">
+                            <button mat-menu-item (click)="createEditConsortium(_data.tenderId, firmConsortium.consortiumId)">
+                                <mat-icon>edit</mat-icon>
+                                <span>{{ "Edit" | localize }}</span>
+                            </button>
+                            <button mat-menu-item (click)="consortiumDetail(firmConsortium.consortiumId)">
+                                <mat-icon>web_asset</mat-icon>
+                                <span>{{ "Details" | localize }}</span>
+                            </button>
+                            <button mat-menu-item (click)="delete(firmConsortium)">
+                                <mat-icon>delete</mat-icon>
+                                <span>{{ "Delete" | localize }}</span>
+                            </button>
+                        </mat-menu>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <button *ngIf="firmConsortiumList.length < maxFirmInConsortium" mat-mini-fab color="primary" class="pull-right" (click)="createEditConsortium(_data.tenderId)">
+            <mat-icon>add</mat-icon>
+        </button>
+    </div>
+</div>

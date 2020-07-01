@@ -1,0 +1,315 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<localizationDictionary culture="tr">
+  <texts>
+    <text name="HomePage" value="Ana Sayfa" />
+    <text name="About" value="Hakkında" />
+    <text name="WelcomeMessage" value="AYCCorporate projesine hoşgeldiniz!" />
+    <text name="FormIsNotValidMessage" value="Form geçerli değil. Lütfen kontrol edip hataları düzeltin." />
+    <text name="TenantNameCanNotBeEmpty" value="Müşteri adı boş bırakılamaz." />
+    <text name="InvalidUserNameOrPassword" value="Kullanıcı adı ya da şifre hatalı." />
+    <text name="ThereIsNoTenantDefinedWithName{0}" value="{0} isminde bir müşteri tanımlı değildir." />
+    <text name="TenantIsNotActive" value="{0} isimli müşteri aktif edilmemiştir." />
+    <text name="UserIsNotActiveAndCanNotLogin" value="{0} isimli kullanıcı pasife alınmıştır ve sisteme giremez." />
+    <text name="UserEmailIsNotConfirmedAndCanNotLogin">E-posta adresiniz doğrulanmadı, giriş yapamazsınız.</text>
+    <text name="UserLockedOutMessage">Kullanıcı hesabı kilitlenmiş. Lütfen bir süre sonra tekrar deneyin.</text>
+    <text name="PleaseEnterLoginInformation" value="Lütfen giriş bilgilerinizi girin" />
+    <text name="TenancyName" value="Müşteri adı" />
+    <text name="UserNameOrEmail" value="Kullanıcı adı ya da e-posta" />
+    <text name="Password" value="Şifre" />
+    <text name="RememberMe" value="Beni hatırla" />
+    <text name="LogIn" value="Giriş" />
+    <text name="LoginFailed" value="Giriş başarısız!" />
+    <text name="NameSurname" value="Ad soyad" />
+    <text name="UserName" value="Kullanıcı adı" />
+    <text name="Name" value="İsim" />
+    <text name="Surname" value="Soy isim" />
+    <text name="EmailAddress" value="E-posta adresi" />
+    <text name="Tenants" value="Müşteriler" />
+    <text name="SavedSuccessfully" value="Başarıyla kaydedildi" />
+    <text name="CreateNewTenant" value="Yeni müşteri oluştur" />
+    <text name="AdminEmailAddress" value="Yönetici e-posta adresi" />
+    <text name="Save" value="Kaydet" />
+    <text name="Cancel" value="İptal" />
+    <text name="TenantName_Regex_Description" value="Müşteri adı en az 2 karakter olmalı, bir harfle başlamalı ve harf, rakam, tire ya da alt çizgi ile devam etmelidir." />
+    <text name="DefaultPasswordIs" value="Varsayılan şifre {0}" />
+    <text name="CanBeEmptyToLoginAsHost" value="Host olarak giriş yapmak için boş bırakılabilir." />
+    <text name="Register" value="Kayıt ol" />
+    <text name="OrLoginWith" value="Ya da şununla giriş yap" />
+    <text name="WaitingForActivationMessage" value="Hesabınız sistem yöneticisi tarafından etkinleştirilmek için bekliyor." />
+    <text name="TenantSelection" value="Müşteri seçimi" />
+    <text name="TenantSelection_Detail" value="Lütfen aşağıdaki müşterilerden birisini seçin." />
+    <text name="Logout" value="Çıkış" />
+    <text name="RegisterFormUserNameInvalidMessage">Lütfen kullanıcı adı alanına e-posta adresi girmeyin.</text>
+    <text name="DatabaseConnectionString" value="Veritabanı bağlantı cümlesi" />
+    <text name="Users" value="Kullanıcılar" />
+    <text name="IsActive" value="Etkin mi" />
+    <text name="FullName" value="Tam adı" />
+    <text name="CreateNewUser" value="Yeni kullanıcı oluştur" />
+    <text name="Yes" value="Evet" />
+    <text name="No" value="Hayır" />
+    <text name="Optional" value="Opsiyonel" />
+    <text name="LeaveEmptyToSwitchToHost">Üst kullanıcıya geçiş için boş değer girin.</text>
+    <text name="CurrentTenant">Geçerli müşteri</text>
+    <text name="NotSelected">Seçilmemiş</text>
+    <text name="Change">Değiştir</text>
+    <text name="ChangeTenant">Müşteri değiştir</text>
+    <text name="MultiLevelMenu">Çok Seviyeli Menü</text>
+    <text name="Back">Geri</text>
+    <text name="SuccessfullyRegistered">Başarıyla kayıt olundu</text>
+    <text name="WaitingForEmailActivation">E-posta adresiniz etkinleştirilmeli.</text>
+    <text name="Roles">Roller</text>
+    <text name="DisplayName">Görünen ad</text>
+    <text name="Edit">Düzenle</text>
+    <text name="Delete">Sil</text>
+    <text name="CreateNewRole">Yeni rol oluştur</text>
+    <text name="RoleName">Rol adı</text>
+    <text name="Actions">İşlemler</text>
+    <text name="CouldNotCompleteLoginOperation">Giriş işlemi başarısız! Lütfen daha sonra tekrar deneyiniz.</text>
+    <text name="CouldNotValidateExternalUser">Harici kullanıcı doğrulanamadı!</text>
+    <text name="EditRole">Rolü düzenle</text>
+    <text name="EditTenant">Müşteri düzenle</text>
+    <text name="EditUser">Kullanıcı düzenleme</text>
+    <text name="TenantIdIsNotActive{0}">Müşteri id aktif değil: {0}</text>
+    <text name="UnknownTenantId{0}">Müşteri id aktif değil: {0}</text>
+    <text name="ThisFieldIsRequired">Bu alan zorunludur.</text>
+    <text name="PleaseWait">Lütfen bekleyin...</text>
+    <text name="Administration">Yönetim</text>
+    <text name="ClearAll">Hepsini temizle</text>
+    <text name="ClearOthers">Diğerlerini temizle</text>
+    <text name="LabelOptions">Etikent seçenekleri</text>
+    <text name="Permissions">Yetkiler</text>
+    <text name="RoleDescription">Rol tanımı</text>
+    <text name="Refresh">Yenile</text>
+    <text name="Create">Oluştur</text>
+    <text name="UserDetails">Kullanıcı detayları</text>
+    <text name="UserRoles">Kullanıcı rolleri</text>
+    <text name="UserDeleteWarningMessage">{0} {1} kullanıcısının silimesini onaylıyor musunuz?</text>
+    <text name="TenderDeleteWarningMessage">{0} ihalesinin silimesini onaylıyor musunuz?</text>
+    <text name="ContactDeleteWarningMessage">{0} {1} kişisinin silimesini onaylıyor musunuz?</text>
+    <text name="ConsortiumDeleteWarningMessage">{0} liderliğindeki konsorsiyumun silimesini onaylıyor musunuz?</text>
+    <text name="RoleDeleteWarningMessage">{0} rolü silinecek ve atanmış kullanıcılardan kaldırılacaktır, onaylıyor musunuz?</text>
+    <text name="TenantDeleteWarningMessage">{0} müşterisinin silinmesini onaylıyor musunuz?</text>
+    <text name="ContactNoteDeleteWarningMessage">Notun silinmesini onaylıyor musunuz?</text>
+    <text name="Contacts">Kişiler</text>
+    <text name="Tenders">İhaleler</text>
+    <text name="ContractingAuthorities">Sözleşme Makamları</text>
+    <text name="Firms">Firmalar</text>
+    <text name="Address">Adres</text>
+    <text name="Filter">Filtre</text>
+    <text name="Filters">Filtreler</text>
+    <text name="Search">Ara</text>
+    <text name="Add">Ekle</text>
+    <text name="Title">Unvan</text>
+    <text name="Male">Erkek</text>
+    <text name="Female">Kadın</text>
+    <text name="Sex">Cinsiyet</text>
+    <text name="Nationality">Uyruk</text>
+    <text name="Phone">Telefon</text>
+    <text name="Fax">Faks</text>
+    <text name="Website">Web Sitesi</text>
+    <text name="EMail">E-Posta</text>
+    <text name="Undefined">Belirtilmemiş</text>
+    <text name="SearchPerson">Kişi Ara</text>
+    <text name="SearchFirm">Firma Ara</text>
+    <text name="SearchConsortium">Konsorsiyum Ara</text>
+    <text name="SearchTender">İhale Ara</text>
+    <text name="FirmTitle">Firma Adı</text>
+    <text name="Country">Ülke</text>
+    <text name="TenderNumber">İhale Numarası</text>
+    <text name="TenderName">İhale Adı</text>
+    <text name="EditTender">İhale Düzenle</text>
+    <text name="TenderType">İhale Tipi</text>
+    <text name="Duration">Süre</text>
+    <text name="DurationMonth">Süre (Ay)</text>
+    <text name="Month">Ay</text>
+    <text name="Day">Gün</text>
+    <text name="Year">Yıl</text>
+    <text name="MaximumBudget">Azami Bütçe</text>
+    <text name="Currency">Para Birimi</text>
+    <text name="Status">Durum</text>
+    <text name="PublishDate">Yayım Tarihi</text>
+    <text name="ContractingAuthority">Sözleşme Otoritesi</text>
+    <text name="TenderDescription">İhale Tanımı</text>
+    <text name="TenderCriterias">İhale Kriterleri</text>
+    <text name="TenderInfo">İhale Bilgileri</text>
+    <text name="Details">Detaylar</text>
+    <text name="ImportantDates">Önemli Tarihler</text>
+    <text name="AwardingInfo">Kazanan Bilgileri</text>
+    <text name="Consortiums">Konsorsiyumlar</text>
+    <text name="NoConsortiumExists">Bu ihaleye kayıtlı konsorsiyum bulunmamaktadır.</text>
+    <text name="NoContactExperienceInfoExists">Bu kişiye kayıtlı tecrübe bulunmamaktadır.</text>
+    <text name="NoContactNoteInfoExists">Bu kişiye kayıtlı not bulunmamaktadır.</text>
+    <text name="NoContactChannelInfoExists">Bu kişiye kayıtlı iletişim bilgisi bulunmamaktadır.</text>
+    <text name="ConsortiumLedBy">{0} liderliğindeki konsorsiyum</text>
+    <text name="JobDefinitionAndCriterias">İş Tanımı ve Kriterler</text>
+    <text name="EditConsortium">Konsorsiyumu Düzenle</text>
+    <text name="RelatedTender">İlgili İhale</text>
+    <text name="ConsortiumLeader">Konsorsiyum Lideri</text>
+    <text name="Leader">Lider</text>
+    <text name="Member">Üye</text>
+    <text name="TenderDetail">İhale Detayı</text>
+    <text name="ParticipatedConsortiums">Katılan Konsorsiyumlar</text>
+    <text name="FirmToAddToConsortium">Konsorsiyuma Firma Ekle</text>
+    <text name="AwardInfo">Kazanan Bilgileri</text>
+    <text name="GeneralInformation">Genel Bilgiler</text>
+    <text name="Location">Lokasyon</text>
+    <text name="Service">Hizmet</text>
+    <text name="Supply">Tedarik</text>
+    <text name="Work">İş</text>
+    <text name="Grant">Hibe</text>
+    <text name="Deadline">Son Gün</text>
+    <text name="JobDefinition">İş Tanımı</text>
+    <text name="Criterias">Kriterler</text>
+    <text name="ForecastDate">Ön Bildirim Tarihi</text>
+    <text name="OpenDate">Açılış Tarihi</text>
+    <text name="CloseDate">Kapanış Tarihi</text>
+    <text name="AwardDate">Veriliş Tarihi</text>
+    <text name="ShortlistDate">Kısaliste Tarihi</text>
+    <text name="CancellationDate">İptal Tarihi</text>
+    <text name="AwardedConsortium">Kazanan Konsorsiyum</text>
+    <text name="AwardedPrice">Veriliş Fiyatı</text>
+    <text name="AwardedFinancialScore">Kazananın Finansal Puanı</text>
+    <text name="AwardedTotalScore">Kazananın Toplam Puanı</text>
+    <text name="AwardedTechnicalScore">Kazananın Teknik Puanı</text>
+    <text name="Forecast">Ön Bildirim</text>
+    <text name="Open">Açık</text>
+    <text name="Closed">Kapalı</text>
+    <text name="Shortlisted">Kısa Liste</text>
+    <text name="Awarded">Sonuçlanmış</text>
+    <text name="Cancelled">İptal Edilmiş</text>
+    <text name="SearchByCountry">Ülkeye Göre Ara</text>
+    <text name="SearchByName">İsme Göre Ara</text>
+    <text name="SearchByTitle">Başlığa Göre Ara</text>
+    <text name="Reset">Sıfırla</text>
+    <text name="PageNumber">Sayfa Numarası</text>
+    <text name="ResultCount">Sonuç Sayısı</text>
+    <text name="WorkingAreas">İş Alanları</text>
+    <text name="Experiences">Tecrübeler</text>
+    <text name="Notes">Notlar</text>
+    <text name="ContactChannel">İletişim Bilgileri</text>
+    <text name="NoteTaker">Notu Alan</text>
+    <text name="NoteTakenOn">Kimin Hakkında</text>
+    <text name="Type">Türü</text>
+    <text name="Date">Tarih</text>
+    <text name="OpeningDate">Açılış Tarihi</text>
+    <text name="ClosingDate">Kapanış Tarihi</text>
+    <text name="AwardingDate">Veriliş Tarihi</text>
+    <text name="NextPhase">Sonraki Aşama</text>
+    <text name="StructureErrorReviewCodeWarning">Yapısal bir hata bulundu. Lütfen sayfa kodunu gözden geçirin.</text>
+    <text name="TechnicalScore">Teknik Puan</text>
+    <text name="FinancialScore">Finansal Puan</text>
+    <text name="TotalScore">Toplam Puan</text>
+    <text name="Position">Pozisyon</text>
+    <text name="Discount">Fiyat Kırma</text>
+    <text name="Result">Sonuç</text>
+    <text name="Contact">Kişi</text>
+    <text name="NoteTitle">Not Başlığı</text>
+    <text name="AddContactNote">Kişi Notu Ekle</text>
+    <text name="EditContactNote">Kişi Notu Düzenle</text>
+    <text name="Note">Not</text>
+    <text name="ContactNotes">Kişi Notları</text>
+    <text name="avgTechnicalScoreWithNulls">Ort. Teknik P.*</text>
+    <text name="avgTechnicalScoreWithoutNulls">Ort. Teknik P.</text>
+    <text name="avgFinancialScoreWithNulls">Ort. Finansal P.*</text>
+    <text name="avgFinancialScoreWithoutNulls">Ort. Finansal P.</text>
+    <text name="stDevTechnicalScoreWithNulls">Teknik P. St. Sapma*</text>
+    <text name="stDevTechnicalScoreWithoutNulls">Teknik P. St Sapma</text>
+    <text name="stDevFinancialScoreWithNulls">Finansal P. St Sapma*</text>
+    <text name="stDevFinancialScoreWithoutNulls">Finansal P. St Sapma</text>
+    <text name="avgDiscount">Ort. İndirim Oranı</text>
+    <text name="stDevDiscount">İndirim Oranı St. Sapma</text>
+    <text name="maximumDiscount">Azami İndirim Oranı</text>
+    <text name="minimumDiscount">Asgari İndirim Oranı</text>
+    <text name="WhatIsStDev">Standart sapma değeri 0'a ne kadar yakınsa, farklı ihalelerden aldığı ilgili puan değerleri birbirine o kadar yakındır. </text>
+    <text name="ConsortiumDetails">Konsorsiyum Detayları</text>
+    <text name="NoDataAvailable">Veri Bulunmuyor</text>
+    <text name="FirmDetail">Firma Detayları</text>
+    <text name="Won">Kazandı</text>
+    <text name="Lost">Kaybetti</text>
+    <text name="Unannounced">Açıklanmadı</text>
+    <text name="Scores">Puanlar</text>
+    <text name="ShortlistStatistics">Kısaliste İstatistikleri</text>
+    <text name="OfferStatistics">Teklif İstatistikleri</text>
+    <text name="OfferCalculator">Teklif Hesaplama</text>
+    <text name="AycScore">Ayc Teknik P.</text>
+    <text name="CompetitorScore">Rakip Teknik P.</text>
+    <text name="aycBottomTreshold">Verilebilecek Azami Fiyat</text>
+    <text name="CompetitorOffer">Rakip Fiyat Teklifi</text>
+    <text name="TechnicalScoreDifference">Teknik P. Farkı</text>
+    <text name="BreakEvenPoint">Başabaş Noktası</text>
+    <text name="OfferTresholdError">Başabaş fiyat, üst sınırınızı aşmakta.</text>
+    <text name="TableNoElementWarning">Bu tabloya kayıtlı eleman bulunmamaktadır.</text>
+    <text name="FullTitle">Tam Unvanı</text>
+    <text name="FirmContacts">Firma Kişileri</text>
+    <text name="ShortlistComparison">Kısaliste Karşılaştırmaları</text>
+    <text name="ScoreComparison">Skor Karşılaştırmaları</text>
+    <text name="UnannouncedTenders">Açıklanmamış İhaleler</text>
+    <text name="TendersFirstFirmWon">İlk Firmanın Kazandıkları</text>
+    <text name="TendersSecondFirmWon">İkinci Firmanın Kazandıkları</text>
+    <text name="FirmToCompare">Karşılaştırılacak Firma</text>
+    <text name="ShortlistScoresAgainstEachOther">Karşılaştıkları İhaleler</text>
+    <text name="ShortlistResultsAsLeader">Lider Olduğu İhalelerdeki Sonuçlar</text>
+    <text name="ShortlistResultsAsMember">Üye Olduğu İhalelerdeki Sonuçlar</text>
+    <text name="FirmsShortlistResults">Firma Kısaliste Sonuçları</text>
+    <text name="ShortlistResultsByRole">Rol Bazlı Kısaliste Sonuçları</text>
+    <text name="RolesOfTheFirm">Firma Rol Dağılımı</text>
+    <text name="Total">Toplam</text>
+    <text name="Number">Sayı</text>
+    <text name="Ratio">Oran</text>
+    <text name="Score">Skor</text>
+    <text name="NoFirmSelected">Lütfen Firma Seçiniz</text>
+    <text name="FirstFirmRole">Birinci Firmanını Rolü</text>
+    <text name="SecondFirmRole">İkinci Firmanını Rolü</text>
+    <text name="BothLostTenders">İkisinin De Kaybettiği İhaleler</text>
+    <text name="FirmScoreResultsAsLeader">Firmaların Lider Rolündeki Skorları</text>
+    <text name="FirmScoreResultsAsMember">Firmaların Üye Rolündeki Skorları</text>
+    <text name="ShortlistParticipationByRole">Rol Bazlı Kısaliste Katılımları</text>
+    <text name="FirmDetails">Firma Detayları</text>
+    <text name="Compare">Karşılaştır</text>
+    <text name="FirmComparison">Firma Karşılaştırma</text>
+    <text name="SearchByNoteTitle">Not Başlığına Göre Ara</text>
+    <text name="SearchByUser">Kullanıcıya Göre Ara</text>
+    <text name="SearchByNoteMeetingDate">Tarihe Göre Ara</text>
+    <text name="SearchByNoteContact">Kişiye Göre Ara</text>
+    <text name="SearchByNoteMeetingType">Tipe Göre Ara</text>
+    <text name="NoteContact">İlgili Kiş</text>
+    <text name="ChannelType">İletişim Tipi</text>
+    <text name="ChannelContext">İletişim İçeriği</text>
+    <text name="AddFirm">Firma Ekle</text>
+    <text name="EditFirm">Firma Düzenle</text>
+    <text name="AddContact">Kişi Ekle</text>
+    <text name="EditContact">Kişi Düzenle</text>
+    <text name="AwardedConsortiumMembers">Kazanan Konsorsiyum Üyeleri</text>
+    <text name="PreparingToAttend">Katılım Hazırlığı Yapılıyor</text>
+    <text name="WaitingForShortlist">Kısaliste Bekleniyor</text>
+    <text name="OfferBeingPrepared">Teklif Hazırlanıyor</text>
+    <text name="AycIsAwarded">Kazanıldı</text>
+    <text name="AycHasLost">Kaybedildi</text>
+    <text name="TenderCancelled">İptal Edildi</text>
+    <text name="ForecastTenders">Ön Bildirimde Olan İhaleler</text>
+    <text name="OpenTenders">Açık Olan İhaleler</text>
+    <text name="ShowMore">Daha Fazla Göster</text>
+    <text name="AycSystemDashboard">Ayc Sistem Anasayfa</text>
+    <text name="AycTenderResultCounts">İhale Sonuçları</text>
+    <text name="AycTenderResultGraph">İhale Sonuçları Grafiği</text>
+    <text name="TendersParticipated">Katılınılan İhaleler</text>
+    <text name="AreYouSureToTransferFirm">{0} firması sistemden silinecek ve konsorsiyum bilgileri, ilgili kişiler ve iş alanları {1} firmasına aktarılacaktır. Onaylıyor musunuz?</text>
+    <text name="FirmAddDuplicationError">Eklemek istediğiniz firma sistemde mevcut.</text>
+    <text name="TenderAddDuplicationError">Eklemek istediğiniz ihale sistemde mevcut.</text>
+    <text name="Partners">Ortaklar</text>
+    <text name="WaitingForAward">Sonuç Bekleniyor</text>
+    <text name="FirmName">Firma Adı</text>
+    <text name="AwardCount">Kazandığı</text>
+    <text name="ForecestAndOpenTenders">Ön Bildirimde / Açık İhaleler</text>
+    <text name="AycConsultancy">Ayc Danışmanlık</text>
+    <text name="EmailNotificationInfo">E-Posta Bildirimi Bilgileri</text>
+    <text name="EmailNotifications">E-Posta Bildirimleri</text>
+    <text name="EditEmailNotification">E-Posta Bildirimleri</text>
+    <text name="AddEmailNotification">E-Posta Bildirimleri</text>
+    <text name="Receivers">Alıcılar</text>
+    <text name="Description">Açıklama</text>
+    <text name="EMailNotificationAddDuplicationError">Aynı İsimde E-Posta Bildirimi Bulunmaktadır. Lütfen Farklı Bir İsim Giriniz.</text>
+    <text name="OnlyAdminAuthorized">Sadece Admin'in yetkisi bulunmaktadır.</text>
+    <text name="DeadlinePassedWarning">İhalenin son günü geçmiş bulunuyor. Lütfen ihaleyi bir sonraki aşamaya geçiriniz.</text>
+  </texts>
+</localizationDictionary>

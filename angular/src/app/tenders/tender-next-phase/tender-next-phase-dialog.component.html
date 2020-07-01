@@ -1,0 +1,197 @@
+<div class="col col-sm-11 col-md-11 col-lg-11">
+    <h1 mat-dialog-title>{{ "EditTender" | localize }}</h1>
+</div>
+<div class="col col-sm-1 col-md-1 col-lg-1">
+    <mat-icon style="cursor: pointer" (click)="close(false)">cancel</mat-icon>
+</div>
+<div class="col col-sm-12 col-md-12 col-lg-12">
+    <form autocomplete="off" #editTenderModal="ngForm" [formGroup]="tenderNextPhaseFormGroup" (ngSubmit)="save()">
+        <div class="row-fluid" *ngIf="_data.statusId == eStatus.Forecast">
+            <div class="col col-sm-4 col-md-4 col-lg-4">
+                <mat-form-field>
+                    <input matInput
+                           name="OpeningDate"
+                           [matDatepicker]="pickerForOpeningDate"
+                           [(ngModel)]="tender.openingDate"
+                           [placeholder]="'OpeningDate' | localize"
+                           formControlName="openingDate"
+                           min="{{ tender.forecastDate | date:'yyyy-MM-dd' }}">
+                    <mat-datepicker-toggle matSuffix [for]="pickerForOpeningDate"></mat-datepicker-toggle>
+                    <mat-datepicker #pickerForOpeningDate></mat-datepicker>
+                </mat-form-field>
+            </div>
+            <div class="col col-sm-4 col-md-4 col-lg-4">
+                <mat-form-field>
+                    <input matInput
+                           name="Deadline"
+                           [matDatepicker]="pickerForDeadline"
+                           [(ngModel)]="tender.deadline"
+                           [placeholder]="'Deadline' | localize"
+                           formControlName="deadline"
+                           min="{{ tender.openingDate | date:'yyyy-MM-dd' }}">
+                    <mat-datepicker-toggle matSuffix [for]="pickerForDeadline"></mat-datepicker-toggle>
+                    <mat-datepicker #pickerForDeadline></mat-datepicker>
+                </mat-form-field>
+            </div>
+            <div class="col col-sm-4 col-md-4 col-lg-4">
+                <mat-form-field>
+                    <input matInput
+                           type="number"
+                           name="Duration"
+                           [placeholder]="'Duration' | localize"
+                           [(ngModel)]="tender.duration"
+                           formControlName="duration" />
+                </mat-form-field>
+            </div>
+            <div class="col col-sm-12 col-md-12 col-lg-12">
+                <mat-form-field>
+                    <textarea matInput
+                              name="TenderDescription"
+                              [placeholder]="'TenderDescription' | localize"
+                              [(ngModel)]="tender.description"
+                              rows="9"
+                              formControlName="tenderDescription"></textarea>
+                </mat-form-field>
+            </div>
+            <div class="col col-sm-12 col-md-12 col-lg-12">
+                <mat-form-field>
+                    <textarea matInput
+                              name="TenderCriterias"
+                              [placeholder]="'TenderCriterias' | localize"
+                              [(ngModel)]="tender.criterias"
+                              rows="9"
+                              formControlName="tenderCriterias"></textarea>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="row-fluid" *ngIf="_data.statusId == eStatus.Open">
+            <div class="col col-sm-12 col-md-12 col-lg-12">
+                <mat-form-field>
+                    <input matInput
+                           name="ClosingDate"
+                           [matDatepicker]="pickerForClosingDate"
+                           [(ngModel)]="tender.closingDate"
+                           [placeholder]="'ClosingDate' | localize"
+                           formControlName="closingDate"
+                           min="{{ tender.openingDate | date:'yyyy-MM-dd' }}">
+                    <mat-datepicker-toggle matSuffix [for]="pickerForClosingDate"></mat-datepicker-toggle>
+                    <mat-datepicker #pickerForClosingDate></mat-datepicker>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="row-fluid" *ngIf="_data.statusId == eStatus.Closed">
+            <div class="col col-sm-12 col-md-12 col-lg-12">
+                <mat-form-field>
+                    <input matInput
+                           name="ShortlistDate"
+                           [matDatepicker]="pickerForShortlistDate"
+                           [(ngModel)]="tender.shortlistDate"
+                           [placeholder]="'ShortlistDate' | localize"
+                           formControlName="shortlistDate"
+                           min="{{ tender.closingDate | date:'yyyy-MM-dd' }}">
+                    <mat-datepicker-toggle matSuffix [for]="pickerForShortlistDate"></mat-datepicker-toggle>
+                    <mat-datepicker #pickerForShortlistDate></mat-datepicker>
+                </mat-form-field>
+            </div>
+
+            <div class="col col-sm-1 col-md-1 col-md-1">
+                <mat-icon style="cursor: pointer" (click)="addEditConsortium(_data.tenderId)">add</mat-icon>
+            </div>
+            <div class="col col-sm-12 col-md-12 col-lg-12">
+                <div class="body table-responsive">
+                    <table class="table table-hover table-striped" [busy]="isTableLoading">
+                        <thead>
+                            <tr>
+                                <th width="60%">{{ "Consortium" | localize }}</th>
+                                <th width="10%">{{ "Actions" | localize }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor=" let consortium of consortiumList ">
+                                <td>{{ "ConsortiumLedBy" | localize: consortium.firm.name + " (" + consortium.firm.country.countryName + ")" }}</td>
+                                <td>
+                                    <button class="action-button" mat-icon-button (click)="deleteConsortium(consortium.id)">
+                                        <mat-icon>delete</mat-icon>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="row-fluid" *ngIf="_data.statusId == eStatus.Shortlisted">
+            <div class="col col-sm-6 col-md-6 col-lg-6">
+                <mat-form-field>
+                    <input matInput
+                           name="AwardingDate"
+                           [matDatepicker]="pickerForAwardingDate"
+                           [(ngModel)]="tender.awardingDate"
+                           [placeholder]="'AwardingDate' | localize"
+                           formControlName="awardingDate"
+                           min="{{ tender.shortlistDate | date:'yyyy-MM-dd' }}">
+                    <mat-datepicker-toggle matSuffix [for]="pickerForAwardingDate"></mat-datepicker-toggle>
+                    <mat-datepicker #pickerForAwardingDate></mat-datepicker>
+                </mat-form-field>
+            </div>
+            <div class="col col-sm-4 col-md-4 col-lg-4">
+                <mat-form-field>
+                    <input matInput
+                           name="AwardedPrice"
+                           [placeholder]="'AwardedPrice' | localize"
+                           [(ngModel)]="tender.awardedPrice"
+                           formControlName="awardedPrice" />
+                </mat-form-field>
+            </div>
+            <div class="col col-sm-12 col-md-12 col-lg-12">
+                <mat-form-field>
+                    <mat-select [placeholder]="'AwardedConsortium' | localize"
+                                [(ngModel)]="tender.awardedConsortiumId"
+                                name="AwardedConsortium"
+                                formControlName="awardedConsortiumId">
+                        <mat-option *ngFor="let consortium of consortiumList" [value]="consortium.consortiumId">{{ "ConsortiumLedBy" | localize: consortium.firm.name + " ("+ consortium.firm.country.countryName + ")" }}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="col col-sm-4 col-md-4 col-lg-4">
+                <mat-form-field>
+                    <input matInput
+                           name="AwardedTechnicalScore"
+                           [placeholder]="'AwardedTechnicalScore' | localize"
+                           [(ngModel)]="tender.awardedTechnicalScore"
+                           formControlName="awardedTechnicalScore" />
+                </mat-form-field>
+            </div>
+            <div class="col col-sm-4 col-md-4 col-lg-4">
+                <mat-form-field>
+                    <input matInput
+                           name="AwardedFinancialScore"
+                           [placeholder]="'AwardedFinancialScore' | localize"
+                           [(ngModel)]="tender.awardedFinancialScore"
+                           formControlName="awardedFinancialScore" />
+                </mat-form-field>
+            </div>
+            <div class="col col-sm-4 col-md-4 col-lg-4">
+                <mat-form-field>
+                    <input matInput
+                           [value]="tender.awardedTechnicalScore * 0.8 + tender.awardedFinancialScore * 0.2"
+                           name="AwardedTotalScore"
+                           [placeholder]="'AwardedTotalScore' | localize"
+                           [(ngModel)]="tender.awardedTotalScore"
+                           formControlName="awardedTotalScore" />
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="col col-sm-12 col-md-12 col-lg-12">
+            <div mat-dialog-actions align="end">
+                <button mat-flat-button
+                        type="submit"
+                        flex="15"
+                        color="primary"
+                        [disabled]="!editTenderModal.form?.valid || saving">
+                    {{ "Save" | localize }}
+                </button>
+            </div>
+        </div>
+    </form>
+</div>

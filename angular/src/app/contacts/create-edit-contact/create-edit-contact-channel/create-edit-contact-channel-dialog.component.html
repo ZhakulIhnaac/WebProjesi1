@@ -1,0 +1,47 @@
+<div class="col col-sm-11 col-md-11 col-lg-11">
+    <h1 mat-dialog-title *ngIf="_data.contactChannelId != null">{{ "EditContactChannel" | localize }}</h1>
+    <h1 mat-dialog-title *ngIf="_data.contactChannelId == null">{{ "AddContactChannel" | localize }}</h1>
+</div>
+<div class="col col-sm-1 col-md-1 col-lg-1">
+    <mat-icon style="cursor: pointer" (click)="close(false)">cancel</mat-icon>
+</div>
+<div class="col col-sm-12 col-md-12 col-lg-12">
+    <form autocomplete="off" #editContactChannelModal="ngForm" [formGroup]="createEditContactChannelFormGroup" (ngSubmit)="save()">
+        <mat-dialog-content>
+            <br />
+            <div class="row-fluid">
+                <div class="col col-sm-12 col-md-12 col-lg-12">
+                    <mat-form-field>
+                        <mat-select [placeholder]="l('ChannelType')"
+                                    [(ngModel)]="contactChannel.channelTypeId"
+                                    name="ChannelType"
+                                    formControlName = "channelType"
+                                    required>
+                            <mat-option *ngFor="let channelType of channelTypeList" [value]="channelType.id">{{ channelType.channelName }}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="col col-sm-12 col-md-12 col-lg-12">
+                    <mat-form-field>
+                        <input matInput
+                               name="ChannelContext"
+                               [placeholder]="'ChannelContext' | localize"
+                               [(ngModel)]="contactChannel.channelContext"
+                               formControlName = "channelContext"
+                               maxlength="64"
+                               required/>
+                    </mat-form-field>
+                </div>
+            </div>
+        </mat-dialog-content>
+        <div mat-dialog-actions align="end">
+            <button mat-flat-button
+                    type="submit"
+                    flex="15"
+                    color="primary"
+                    [disabled]="!editContactChannelModal.form.valid || saving">
+                {{ "Save" | localize }}
+            </button>
+        </div>
+    </form>
+</div>

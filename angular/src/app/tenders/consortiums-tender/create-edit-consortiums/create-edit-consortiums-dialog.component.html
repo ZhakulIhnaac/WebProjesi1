@@ -1,0 +1,82 @@
+<div class="col col-sm-11 col-md-11 col-lg-11">
+    <h1 *ngIf="_data.consortiumId == undefined" mat-dialog-title>{{ "AddConsortium" | localize}}</h1>
+    <h1 *ngIf="_data.consortiumId != undefined" mat-dialog-title>{{ "EditConsortium" | localize}}</h1>
+</div>
+<div class="col col-sm-1 col-md-1 col-lg-1">
+    <mat-icon style="cursor: pointer" (click)="close(false)">cancel</mat-icon>
+</div>
+<div class="col col-sm-12 col-md-12 col-lg-12">
+    <form autocomplete="off" #editTenderModal="ngForm">
+        <div class="row-fluid">
+            <div class="col col-sm-12 col-md-12 col-md-12">
+                <mat-form-field>
+                    <mat-select [placeholder]="l('ConsortiumLeader')"
+                                [(ngModel)]="consortiumLeader"
+                                name="ConsortiumLeader"
+                                required>
+                        <mat-option *ngFor="let firmInConsortium of firmInConsortiumList" [value]="firmInConsortium" (click)="changeLeader(firmInConsortium)">{{ firmInConsortium.firm.name }} ({{ firmInConsortium.firm.country.countryName }})</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="col col-sm-11 col-md-11 col-md-11">
+                <mat-form-field>
+                    <mat-select [placeholder]="l('FirmToAddToConsortium')"
+                                name="FirmToAddToConsortium"
+                                [(ngModel)]="firmToAdd"
+                                (change)="addFirmToConsortium()">
+                        <mat-option [disabled]="true">
+                            <input matInput
+                                   name="firmSelectBoxFilter"
+                                   [(ngModel)]="firmSelectBoxFilter"
+                                   [placeholder]="l('Search')"
+                                   (ngModelChange)="filterFirm()" />
+                        </mat-option>
+                        <mat-option *ngFor="let firm of firmListFiltered" [value]="firm">{{ firm.name }} ({{ firm.country.countryName }})</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="col col-sm-1 col-md-1 col-md-1">
+                <button mat-icon-button aria-label="Example icon-button with a heart icon" (click)="addFirmToConsortium()">
+                    <mat-icon>add</mat-icon>
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="col col-sm-12 col-md-12 col-lg-12">
+    <div class="body table-responsive">
+        <table class="table table-hover table-striped">
+            <thead>
+                <tr>
+                    <th width="60%">{{ "FirmTitle" | localize }}</th>
+                    <th width="20%">{{ "Country" | localize }}</th>
+                    <th width="10%">{{ "FirmRole" | localize }}</th>
+                    <th width="10%">{{ "Actions" | localize }}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor=" let firmInConsortium of firmInConsortiumList">
+                    <td>{{ firmInConsortium.firm.name }}</td>
+                    <td>{{ firmInConsortium.firm.country.countryName }}</td>
+                    <td>{{ eFirmRole[firmInConsortium.firmRole - 1] | localize }}</td>
+                    <td>
+                        <button class="action-button" mat-icon-button (click)="removeFirmFromConsortium(firmInConsortium)">
+                            <mat-icon>delete_outlined</mat-icon>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div mat-dialog-actions align="end">
+        <button mat-flat-button
+                type="submit"
+                flex="15"
+                color="primary"
+                (click)="save()"
+                [disabled]="!editTenderModal.form.valid || saving">
+            {{ "Save" | localize }}
+        </button>
+    </div>
+</div>
+

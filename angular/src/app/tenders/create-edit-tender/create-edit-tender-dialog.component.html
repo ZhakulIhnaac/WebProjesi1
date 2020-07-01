@@ -1,0 +1,312 @@
+<div class="col col-sm-11 col-md-11 col-lg-11">
+    <h1 mat-dialog-title>{{ "EditTender" | localize }}</h1>
+</div>
+<div class="col col-sm-1 col-md-1 col-lg-1">
+    <mat-icon style="cursor: pointer" (click)="close(false)">cancel</mat-icon>
+</div>
+<div class="col col-sm-12 col-md-12 col-lg-12">
+    <form autocomplete="off" #editTenderModal="ngForm" [formGroup]="createEditTenderFormGroup" (ngSubmit)="save()">
+        <mat-tab-group animationDuration="500ms" mat-stretch-tabs>
+            <mat-tab [label]="'TenderInfo' | localize">
+                <br />
+                <div class="row-fluid">
+                    <div class="col col-sm-3 col-md-3 col-lg-3">
+                        <mat-form-field>
+                            <input matInput
+                                   name="PublishDate"
+                                   [matDatepicker]="pickerForForecastDate"
+                                   [placeholder]="'PublishDate' | localize"
+                                   formControlName="publishDate"
+                                   [(ngModel)]="tender.forecastDate">
+                            <mat-datepicker-toggle matSuffix [for]="pickerForForecastDate"></mat-datepicker-toggle>
+                            <mat-datepicker #pickerForForecastDate></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                    <div class="col col-sm-3 col-md-3 col-lg-3">
+                        <mat-form-field>
+                            <mat-select [placeholder]="l('TenderType')"
+                                        name="TenderType"
+                                        formControlName="tenderType"
+                                        [(ngModel)]="tender.typeId">
+                                <mat-option *ngFor="let tenderType of tenderTypeList" [value]="tenderType.id">{{ tenderType.typeName | localize }}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="col col-sm-3 col-md-3 col-lg-3">
+                        <mat-form-field>
+                            <input matInput
+                                   name="TenderNumber"
+                                   [placeholder]="'TenderNumber' | localize"
+                                   formControlName="tenderNumber"
+                                   [(ngModel)]="tender.tenderNumber" />
+                        </mat-form-field>
+                    </div>
+                    <div class="col col-sm-3 col-md-3 col-lg-3">
+                        <mat-form-field>
+                            <input matInput
+                                   type="number"
+                                   name="MaximumBudget"
+                                   [placeholder]="'MaximumBudget' | localize"
+                                   formControlName="maximumBudget"
+                                   [(ngModel)]="tender.maximumBudget" />
+                        </mat-form-field>
+                    </div>
+                    <div class="col col-sm-12 col-md-12 cold-lg-12">
+                        <mat-form-field>
+                            <textarea matInput
+                                      name="Name"
+                                      [placeholder]="'Name' | localize"
+                                      rows="2"
+                                      formControlName="name"
+                                      [(ngModel)]="tender.title"></textarea>
+                        </mat-form-field>
+                    </div>
+                    <div class="col col-sm-6 col-md-6 col-md-6">
+                        <mat-form-field>
+                            <input matInput
+                                   type="number"
+                                   name="Duration"
+                                   [placeholder]="'DurationMonth' | localize"
+                                   formControlName="duration"
+                                   [(ngModel)]="tender.duration" />
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-select [placeholder]="l('Status')"
+                                        name="Status"
+                                        formControlName="status"
+                                        [(ngModel)]="tender.statusId">
+                                <mat-option *ngFor="let status of statusList" [value]="status.id">{{ status.statusName }}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="col col-sm-6 col-md-6 col-md-6">
+                        <mat-form-field>
+                            <mat-select [placeholder]="l('Country')"
+                                        name="Country"
+                                        formControlName="country"
+                                        [(ngModel)]="tender.locationId">
+                                <mat-option [disabled]="true">
+                                    <input matInput
+                                           name="countrySelectBoxFilter"
+                                           [(ngModel)]="countrySelectBoxFilter"
+                                           [placeholder]="l('Search')"
+                                           (ngModelChange)="filterCountry()"
+                                           [ngModelOptions]="{standalone: true}" />
+                                </mat-option>
+                                <mat-option *ngFor="let country of countryListFiltered" [value]="country.id">{{ country.countryName }}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-select [placeholder]="l('Currency')"
+                                        name="Currency"
+                                        formControlName="currency"
+                                        [(ngModel)]="tender.currencyId">
+                                <mat-option [disabled]="true">
+                                    <input matInput
+                                           name="currencySelectBoxFilter"
+                                           [(ngModel)]="currencySelectBoxFilter"
+                                           [placeholder]="l('Search')"
+                                           (ngModelChange)="filterCurrency()"
+                                           [ngModelOptions]="{standalone: true}" />
+                                </mat-option>
+                                <mat-option *ngFor="let currency of currencyListFiltered" [value]="currency.id">{{ currency.currencyCode }} : {{ currency.currencyName }}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="col col-sm-12 col-md-12 col-md-12">
+                        <mat-form-field>
+                            <mat-select [placeholder]="l('ContractingAuthority')"
+                                        name="ContractingAuthority"
+                                        formControlName="contractingAuthority"
+                                        [(ngModel)]="tender.contractingAuthorityId">
+                                <mat-option [disabled]="true">
+                                    <input matInput
+                                           name="contractingAuthoritySelectBoxFilter"
+                                           [(ngModel)]="contractingAuthoritySelectBoxFilter"
+                                           [placeholder]="l('Search')"
+                                           (ngModelChange)="filterContractingAuthority()"
+                                           [ngModelOptions]="{standalone: true}" />
+                                </mat-option>
+                                <mat-option *ngFor="let contractingAuthority of contractingAuthorityListFiltered" [value]="contractingAuthority.id">{{ contractingAuthority.name }}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </mat-tab>
+            <mat-tab [label]="'JobDefinitionAndCriterias' | localize">
+                <br />
+                <div class="row-fluid">
+                    <div class="col col-sm-12 col-md-12 col-lg-12">
+                        <mat-form-field>
+                            <textarea matInput
+                                      name="TenderDescription"
+                                      [placeholder]="'TenderDescription' | localize"
+                                      rows="9"
+                                      formControlName="tenderDescription"
+                                      [(ngModel)]="tender.description"></textarea>
+                        </mat-form-field>
+                    </div>
+                    <div class="col col-sm-12 col-md-12 col-lg-12">
+                        <mat-form-field>
+                            <textarea matInput
+                                      name="TenderCriterias"
+                                      [placeholder]="'TenderCriterias' | localize"
+                                      rows="9"
+                                      formControlName="tenderCriterias"
+                                      [(ngModel)]="tender.criterias"></textarea>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </mat-tab>
+            <mat-tab [label]="'ImportantDates' | localize" [disabled]="_data.tenderId == null">
+                <br />
+                <div class="row-fluid">
+                    <div class="col col-sm-6 col-md-6 col-lg-6">
+                        <mat-form-field>
+                            <input matInput
+                                   name="OpeningDate"
+                                   [matDatepicker]="pickerForOpeningDate"
+                                   [placeholder]="'OpeningDate' | localize"
+                                   formControlName="openingDate"
+                                   [(ngModel)]="tender.openingDate"
+                                   min="{{ tender.forecastDate | date:'yyyy-MM-dd' }}">
+                            <mat-datepicker-toggle matSuffix [for]="pickerForOpeningDate"></mat-datepicker-toggle>
+                            <mat-datepicker #pickerForOpeningDate></mat-datepicker>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <input matInput
+                                   name="ClosingDate"
+                                   [matDatepicker]="pickerForClosingDate"
+                                   [placeholder]="'ClosingDate' | localize"
+                                   formControlName="closingDate"
+                                   [(ngModel)]="tender.closingDate"
+                                   min="{{ tender.openingDate | date:'yyyy-MM-dd' }}">
+                            <mat-datepicker-toggle matSuffix [for]="pickerForClosingDate"></mat-datepicker-toggle>
+                            <mat-datepicker #pickerForClosingDate></mat-datepicker>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <input matInput
+                                   name="AwardingDate"
+                                   [matDatepicker]="pickerForAwardingDate"
+                                   [placeholder]="'AwardingDate' | localize"
+                                   formControlName="awardingDate"
+                                   [(ngModel)]="tender.awardingDate"
+                                   min="{{ tender.shortlistDate | date:'yyyy-MM-dd' }}">
+                            <mat-datepicker-toggle matSuffix [for]="pickerForAwardingDate"></mat-datepicker-toggle>
+                            <mat-datepicker #pickerForAwardingDate></mat-datepicker>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <input matInput
+                                   name="ShortlistDeadlineDate"
+                                   [matDatepicker]="pickerForShortlistDeadlineDate"
+                                   [placeholder]="'ShortlistDeadlineDate' | localize"
+                                   formControlName="shortlistDeadlineDate"
+                                   [(ngModel)]="tender.shortlistDeadlineDate"
+                                   min="{{ tender.shortlistDate | date:'yyyy-MM-dd' }}">
+                            <mat-datepicker-toggle matSuffix [for]="pickerForShortlistDeadlineDate"></mat-datepicker-toggle>
+                            <mat-datepicker #pickerForShortlistDeadlineDate></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                    <div class="col col-sm-6 col-md-6 col-lg-6">
+                        <mat-form-field>
+                            <input matInput
+                                   name="Deadline"
+                                   [matDatepicker]="pickerForDeadline"
+                                   [placeholder]="'Deadline' | localize"
+                                   formControlName="deadline"
+                                   [(ngModel)]="tender.deadline"
+                                   min="{{ tender.forecastDate | date:'yyyy-MM-dd' }}">
+                            <mat-datepicker-toggle matSuffix [for]="pickerForDeadline"></mat-datepicker-toggle>
+                            <mat-datepicker #pickerForDeadline></mat-datepicker>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <input matInput
+                                   name="ShortlistDate"
+                                   [matDatepicker]="pickerForShortlistDate"
+                                   [placeholder]="'ShortlistDate' | localize"
+                                   formControlName="shortlistDate"
+                                   [(ngModel)]="tender.shortlistDate"
+                                   min="{{ tender.closingDate | date:'yyyy-MM-dd' }}">
+                            <mat-datepicker-toggle matSuffix [for]="pickerForShortlistDate"></mat-datepicker-toggle>
+                            <mat-datepicker #pickerForShortlistDate></mat-datepicker>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <input matInput
+                                   name="CancellationDate"
+                                   [matDatepicker]="pickerForCancellationDate"
+                                   [placeholder]="'CancellationDate' | localize"
+                                   formControlName="cancellationDate"
+                                   [(ngModel)]="tender.cancellationDate"
+                                   min="{{ tender.forecastDate | date:'yyyy-MM-dd' }}">
+                            <mat-datepicker-toggle matSuffix [for]="pickerForCancellationDate"></mat-datepicker-toggle>
+                            <mat-datepicker #pickerForCancellationDate></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </mat-tab>
+            <mat-tab [label]="'AwardingInfo' | localize" [disabled]="_data.tenderId == null">
+                <br />
+                <div class="row-fluid">
+                    <div class="col col-sm-6 col-md-6 col-lg-6">
+
+                        <mat-form-field>
+                            <mat-select name="AwardedConsortium"
+                                        [placeholder]="'AwardedConsortium' | localize"
+                                        formControlName="awardedConsortiumId"
+                                        [(ngModel)]="tender.awardedConsortiumId">
+                                <mat-option *ngFor="let consortium of consortiumList" [value]="consortium.consortiumId">{{ "ConsortiumLedBy" | localize: consortium.firm.name + " ("+ consortium.firm.country.countryName + ")" }}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="col col-sm-6 col-md-6 col-lg-6">
+                        <mat-form-field>
+                            <input matInput
+                                   name="AwardedPrice"
+                                   [placeholder]="'AwardedPrice' | localize"
+                                   formControlName="awardedPrice"
+                                   [(ngModel)]="tender.awardedPrice" />
+                        </mat-form-field>
+                    </div>
+                    <div class="col col-sm-4 col-md-4 col-lg-4">
+                        <mat-form-field>
+                            <input matInput
+                                   name="AwardedTechnicalScore"
+                                   [placeholder]="'AwardedTechnicalScore' | localize"
+                                   formControlName="awardedTechnicalScore"
+                                   [(ngModel)]="tender.awardedTechnicalScore" />
+                        </mat-form-field>
+                    </div>
+                    <div class="col col-sm-4 col-md-4 col-lg-4">
+                        <mat-form-field>
+                            <input matInput
+                                   name="AwardedFinancialScore"
+                                   [placeholder]="'AwardedFinancialScore' | localize"
+                                   formControlName="awardedFinancialScore"
+                                   [(ngModel)]="tender.awardedFinancialScore" />
+                        </mat-form-field>
+                    </div>
+                    <div class="col col-sm-4 col-md-4 col-lg-4">
+                        <mat-form-field>
+                            <input matInput
+                                   [value]="tender.awardedTechnicalScore != null ? tender.awardedTechnicalScore * 0.8 + tender.awardedFinancialScore * 0.2 : null"
+                                   name="AwardedTotalScore"
+                                   [placeholder]="'AwardedTotalScore' | localize"
+                                   formControlName="awardedTotalScore"
+                                   [(ngModel)]="tender.awardedTotalScore" />
+                        </mat-form-field>
+                    </div>
+                </div>
+            </mat-tab>
+        </mat-tab-group>
+
+        <div mat-dialog-actions align="end">
+            <button mat-flat-button
+                    type="submit"
+                    flex="15"
+                    color="primary"
+                    [disabled]="!editTenderModal.form.valid || saving">
+                {{ "Save" | localize }}
+            </button>
+        </div>
+    </form>
+</div>
